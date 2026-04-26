@@ -1,11 +1,10 @@
 // templates/Modern.tsx
 import { Resume } from "@/types/resume"
-import { renderSection } from "../resume-builder/renderSection"
- 
+  
 export function ModernTemplate({ resume }: { resume: Resume }) {
-  const sections = [...resume.sections]
-    .filter((s) => s.visible)
-    .sort((a,b) => a.order - b.order)
+//   const sections = [...resume.sections]
+//     .filter((s) => s.visible)
+//     .sort((a,b) => a.order - b.order)
 
     // text-[color:var(--resume-primary)]
     // bg-[color:var(--resume-primary)]
@@ -18,11 +17,7 @@ export function ModernTemplate({ resume }: { resume: Resume }) {
         fontFamily: resume.theme.font,
       }}
     >
-      {sections.map((section) => (
-        <div key={section.id} className="mb-6">
-          {renderSection(section)}
-        </div>
-      ))}
+       
     </div>
   )
 }

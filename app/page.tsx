@@ -38,7 +38,7 @@ export function Navbar( ) {
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
           <a href="#templates">Templates</a>
-          <Link href={'/guest-builder'}><Button>Create Resume</Button></Link>
+          <Link href={'/resume-builder'}><Button>Create Resume</Button></Link>
         </div>
 
         <button className="md:hidden" >

@@ -28,3 +28,29 @@ export type AIData = {
 
   score?: number // resume score
 }
+
+export type CoverLetter = {
+  id: string; // uuid
+  user_id: string;
+  job_slug: string | null;
+  title: string | null;
+  content: string;
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" | string;
+  is_default: boolean | null;
+  created_at: string; // ISO timestamp
+  updated_at: string; // ISO timestamp
+};
+
+type CookiePreferences = {
+  necessary: true // always true
+  analytics: boolean
+  marketing: boolean
+  preferences: boolean
+}
+
+type User = {
+  id: string
+  email: string
+  full_name?: string
+  role?: string
+}

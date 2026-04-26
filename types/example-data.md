@@ -1,8 +1,8 @@
 {
   "id": "resume_123",
   "title": "Frontend Developer Resume",
-  "sections": [
-    {
+  
+   personal: {
       "id": "sec_1",
       "type": "personal",
       "order": 0,
@@ -12,7 +12,8 @@
         "email": "john@example.com"
       }
     },
-    {
+    
+    experience: {
       "id": "sec_2",
       "type": "experience",
       "order": 2,
@@ -31,8 +32,8 @@
           }
         ]
       }
-    }
-  ],
+    },
+
   "theme": {
     "templateId": "modern",
     "color": "#6C5CE7",

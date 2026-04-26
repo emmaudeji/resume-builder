@@ -102,7 +102,6 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <Navbar/>
           {children}</ThemeProvider>
       </body>
     </html>

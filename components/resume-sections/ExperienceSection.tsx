@@ -1,14 +1,14 @@
-import { ExperienceItem, ExperienceSectionProp } from "@/types/resume";
+import { Experience, ExperienceSectionProp } from "@/types/resume";
 
 // sections/Experience.tsx
 export function ExperienceSection({ data }: {data:ExperienceSectionProp}) {
   return (
     <div>
       <h2 className="font-semibold text-lg mb-2">Experience</h2>
-      {data.items.map((item: ExperienceItem) => (
+      {data.items.map((item: Experience ) => (
         <div key={item.id} className="mb-4">
           <h3 className="font-medium">
-            {item.role} @ {item.company}
+            {item.role} @ {item.company_name}
           </h3>
 
           <p className="text-sm text-gray-500">

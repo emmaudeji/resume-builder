@@ -1,23 +1,31 @@
 export type Resume = {
   id: string
-  userId: string
+  userId?: string
 
-  title: string // "Frontend Developer Resume"
+  title: string
   slug?: string
 
   createdAt: string
   updatedAt: string
 
-  // 🔥 Core content (dynamic)
-  sections: Section[]
+  // ✅ Flat sections (clean access)
+  personal: PersonalSection
+  summary: SummarySection
+  experience: ExperienceSection
+  education: EducationSection
+  skills: SkillsSection
+  projects?: ProjectSection
+  certifications?: CertificationSection
+  languages?: LanguageSection
+  custom?: CustomSection
 
-  // 🎨 Design system
+  // 🎨 Design
   theme: Theme
 
-  // ⚙️ Settings / metadata
+  // ⚙️ Settings
   settings: ResumeSettings
 
-  // 📊 AI + analytics (future-proof)
+  // 🤖 AI
   ai?: AIData
 }
 
@@ -28,7 +36,13 @@ export type Section = {
   visible: boolean
   order: number
 
-  data: unknown
+  data: SectionDataMap
+}
+
+export type BaseSection = {
+  label: string
+  visible: boolean
+  order: number
 }
 
 export type SectionType =
@@ -42,26 +56,57 @@ export type SectionType =
   | "languages"
   | "custom"
 
-export type PersonalSectionProp = {
-  full_name: string
+export type SectionDataMap = {
+  personal: PersonalSectionProp
+  summary: SummarySectionProp
+  experience: ExperienceSectionProp
+  education: EducationSectionProp
+  skills: SkillsSectionProp
+  projects: ProjectSectionProp
+  certifications: CertificationSectionProp  
+  languages: LangaugeSectionProp
+  custom: CustomSectionProp
+}
+
+export type PersonalSectionProp = BaseSection & {
+  // 👤 Identity
+  first_name: string
+  last_name: string
   job_title?: string
+
+  // 📞 Contact
   email?: string
   phone?: string
-  location?: string
   website?: string
   linkedin?: string
   github?: string
-  avatar?: string
-  more?: Record<string, string>
-}
 
+  // 📍 Location
+  address?: string
+  city?: string
+  state?: string
+  postal_code?: string
+  country?: string
+
+  // 🧾 Additional
+  driving_license?: string
+  place_of_birth?: string
+  date_of_birth?: string
+  nationality?: string
+
+  // 🎛️ UI control
+  show_additional_details?: boolean
+
+  avatar?: string
+}
 export type SummarySectionProp = {
   content: string
 }
 
-export type ExperienceItem  = {
+export type Experience  = {
   id: string
-  company: string
+  user_id: string;
+  company_name: string;
   role: string
   location?: string
   start_date: string
@@ -72,28 +117,53 @@ export type ExperienceItem  = {
   highlights?: string[] // 🔥 important for AI
 }
 
-export type ExperienceSectionProp = {
-  items: ExperienceItem[]
+export type ExperienceSectionProp = BaseSection & {
+  items: Experience[]
 }
 
-export type EducationItemProp = {
+export type Education = {
   id: string
-  school: string
+  user_id: string;
+  institution: string
   degree?: string
-  field?: string
+  field_of_study?: string
   start_date?: string
   end_date?: string
+  current?: boolean
+
+  grade?: string
   description?: string
 }
 
-export type SkillsSectionProp = {
+export type EducationSectionProp = BaseSection & {
+  items: Education[]
+}
+
+export interface License {
+  user_id?: string,
+  id?: string
+  title: string
+  issuer?: string
+  issue_date?: string
+  expiry_date?: string | null
+  current?: boolean
+
+  created_date?: string
+  updated_date?: string
+}
+
+export type CertificationSectionProp = BaseSection & {
+  items: License[]
+}
+
+export type SkillsSectionProp = BaseSection & {
   items: {
     name: string
     level?: number // 1–5 (optional)
   }[]
 }
 
-export type ProjectItemProp = {
+export type Project = {
   id: string
   name: string
   description?: string
@@ -101,12 +171,20 @@ export type ProjectItemProp = {
   technologies?: string[]
 }
 
-export type LanguageItemProp = {
+export type ProjectSectionProp = BaseSection & {
+  items: Project[]
+}
+
+export type Language = {
   name: string
   proficiency?: "basic" | "intermediate" | "advanced" | "native"
 }
 
-export type CustomSectionProp = {
+export type LangaugeSectionProp = BaseSection & {
+    items: Language[]
+}
+
+export type CustomSectionProp = BaseSection & {
   title: string
   items: {
     id: string
@@ -115,3 +193,4 @@ export type CustomSectionProp = {
     description?: string
   }[]
 }
+

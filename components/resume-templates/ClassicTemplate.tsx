@@ -1,14 +1,12 @@
 import { Resume } from "@/types/resume";
 
 export function ClassicTemplate({ resume }: { resume: Resume }) {
-    const sections = [...resume.sections]
-        .filter((s) => s.visible)
-        .sort((a,b) => a.order - b.order)
+ 
 
   return (
     <div 
         className="grid grid-cols-3 gap-6 p-8">
-      <div className="col-span-1 bg-[color:var(--resume-primary)]">
+      <div className="col-span-1 bg-[color:var(--resume-primary)] border-l-2 border-[color:var(--resume-primary)]">
         {/* sidebar sections */}
       </div>
 

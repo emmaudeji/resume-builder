@@ -1,8 +1,10 @@
 // Renderer.tsx
+import { useResumeBuilder } from "@/context/resume-builder.context"
 import { TEMPLATE_REGISTRY } from "./TemplateRegistry"
 import { Resume } from "@/types/resume"
 
-export function ResumeRenderer({ resume }: { resume: Resume }) {
+export function ResumeRenderer( ) {
+  const {resume} = useResumeBuilder()
   const Template =
     TEMPLATE_REGISTRY[resume.theme.templateId as keyof typeof TEMPLATE_REGISTRY] ||
     TEMPLATE_REGISTRY["modern"]
