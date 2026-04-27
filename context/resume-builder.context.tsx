@@ -6,8 +6,7 @@ import { initialResume } from "@/constants/resume-constants"
 import { validatePersonal } from "@/validators"
 
 type Step = SectionType | "review"
-
-type Errors = Partial<Record<Step, string[]>>
+ 
 type StepErrors = Partial<Record<Step, Record<string, string>>>
 
 type ResumeBuilderContextType = {
@@ -32,6 +31,19 @@ type ResumeBuilderContextType = {
 }
 
 const ResumeBuilderContext = createContext<ResumeBuilderContextType | null>(null)
+
+// 🔥 STEP NAVIGATION
+  const steps: Step[] = [
+    "personal",
+    "experience",
+    "education",
+    "skills",
+    "projects",
+    "certifications",
+    "summary",
+    "review",
+    // "custom"
+  ]
 
 export function ResumeBuilderProvider({
   children,
@@ -120,40 +132,13 @@ const validateStep = useCallback(
   [resume]
 )
   const validateAll = useCallback(() => {
-    const steps: Step[] = [
-      "personal",
-      "summary",
-      "experience",
-      "education",
-      "skills",
-    ]
-
-    return steps.every((s) => validateStep(s))
+       return steps.every((s) => validateStep(s))
   }, [validateStep])
-
-  // 🔥 STEP NAVIGATION
-  const steps: Step[] = [
-    "personal",
-    "summary",
-    "experience",
-    "education",
-    "skills",
-    "review",
-  ]
 
   const next = useCallback(() => {
     const isValid = validateStep(step)
 
     if (!isValid) return
-
-    const steps: Step[] = [
-      "personal",
-      "summary",
-      "experience",
-      "education",
-      "skills",
-      "review",
-    ]
 
     const index = steps.indexOf(step)
 

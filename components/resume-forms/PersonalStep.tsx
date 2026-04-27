@@ -5,6 +5,7 @@ import { CustomInput } from "@/components/shared/CustomInput"
 import CustomSelect from "@/components/shared/CustomSelect"
 import { Button } from "@/components/ui/button"
 import { useMemo } from "react"
+import { AvatarUpload } from "./AvatarUpload"
 
 const countries = [
   { label: "Nigeria", value: "Nigeria" },
@@ -22,25 +23,32 @@ export function PersonalStep() {
   )
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       
       {/* 🔥 HEADER */}
-      <div>
-        <h2 className="text-lg font-semibold">Personal Details</h2>
+      <div className="border-b pb-3">
+        <h2 className="text-xl font-semibold">Personal Details</h2>
         <p className="text-sm text-muted-foreground">
           Users who added phone and email received 64% more recruiter responses.
         </p>
       </div>
 
       {/* 🎯 JOB TARGET */}
-      <CustomInput
-        label="Job Target"
-        value={p.job_title || ""}
-        onChange={(e) =>
-          update("personal", { job_title: e.target.value })
-        }
-        placeholder="Software Engineer"
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <CustomInput
+          label="Job Target"
+          value={p.job_title || ""}
+          required
+          onChange={(e) =>
+            update("personal", { job_title: e.target.value })
+          }
+          placeholder="Software Engineer"
+          className=" "
+        />
+        <AvatarUpload />
+
+      </div>
+      
 
       {/* 👤 NAME */}
       <div className="grid grid-cols-2 gap-4">
@@ -141,9 +149,9 @@ export function PersonalStep() {
 
       {/* 🔽 TOGGLE ADDITIONAL */}
       <div>
-        <Button
-          variant="ghost"
-          className="px-0 text-sm"
+        <span
+          // variant="ghost"
+          className="cursor-pointer px-0 py-0 h-0 text-sm text-primary/90 hover:text-primary"
           onClick={() =>
             update("personal", {
               show_additional_details: !p.show_additional_details,
@@ -153,7 +161,7 @@ export function PersonalStep() {
           {p.show_additional_details
             ? "Hide additional details"
             : "Show additional details"}
-        </Button>
+        </span>
       </div>
 
       {/* 🧾 ADDITIONAL */}

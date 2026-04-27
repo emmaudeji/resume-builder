@@ -4,14 +4,15 @@ import { useResumeBuilder } from "@/context/resume-builder.context"
 import { CustomInput } from "@/components/shared/CustomInput"
 import { Button } from "@/components/ui/button"
 import { useCallback, useState } from "react"
-import { Trash2, Plus, ChevronDown } from "lucide-react"
+import { Trash2, Plus, ChevronDown, X } from "lucide-react"
 import { v4 as uuid } from "uuid"
 import { cn } from "@/lib/utils"
-import { Education } from "@/types/resume"
+import { Project } from "@/types/resume"
+import { TechInput } from "./Technput"
 
-export function EducationStep() {
+export function ProjectStep() {
   const { resume, update } = useResumeBuilder()
-  const items = resume.education.items as Education[]
+  const items:Project[] = resume.projects?.items || []
 
   const [openId, setOpenId] = useState<string | null>(
     items[0]?.id || null
@@ -21,13 +22,11 @@ export function EducationStep() {
 
   // 🔍 VALIDATION
   const canAdd = useCallback(() => {
-    const invalid = items.find(
-      (item) => !item.institution?.trim()
-    )
+    const invalid = items.find((item) => !item.name?.trim())
 
     if (invalid) {
       setOpenId(invalid.id)
-      setError("Please add institution before adding another education")
+      setError("Please add project name before adding another")
       return false
     }
 
@@ -36,33 +35,28 @@ export function EducationStep() {
   }, [items])
 
   // ➕ ADD
-  const addEducation = useCallback(() => {
+  const addProject = useCallback(() => {
     if (!canAdd()) return
 
-    const newItem: Education = {
+    const newItem: Project = {
       id: uuid(),
-      user_id: resume.userId || "",
-      institution: "",
-      degree: "",
-      field_of_study: "",
-      start_date: "",
-      end_date: "",
-      current: false,
-      grade: "",
+      name: "",
       description: "",
+      link: "",
+      technologies: [],
     }
 
-    update("education", {
+    update("projects", {
       items: [...items, newItem],
     })
 
     setOpenId(newItem.id)
-  }, [items, update, resume.userId, canAdd])
+  }, [items, update, canAdd])
 
   // ❌ REMOVE
-  const removeEducation = useCallback(
+  const remove = useCallback(
     (id: string) => {
-      update("education", {
+      update("projects", {
         items: items.filter((i) => i.id !== id),
       })
     },
@@ -74,7 +68,7 @@ export function EducationStep() {
     (id: string, field: string, value: any) => {
       setError(null)
 
-      update("education", {
+      update("projects", {
         items: items.map((item) =>
           item.id === id ? { ...item, [field]: value } : item
         ),
@@ -88,35 +82,34 @@ export function EducationStep() {
 
       {/* HEADER */}
       <div>
-        <h2 className="text-lg font-semibold">Education</h2>
+        <h2 className="text-lg font-semibold">Projects</h2>
         <p className="text-sm text-muted-foreground">
-          Add your academic background.
+          Showcase real work. Projects make your resume stand out.
         </p>
       </div>
 
       {/* LIST */}
       <div className="space-y-2">
-        {items.map((edu, index) => {
-          const isOpen = openId === edu.id
+        {items.map((proj) => {
+          const isOpen = openId === proj.id
 
           return (
-            <div key={edu.id}>
+            <div key={proj.id}>
 
-              {/* 🔹 HEADER ROW */}
+              {/* 🔹 HEADER */}
               <button
                 type="button"
                 onClick={() =>
-                  setOpenId(isOpen ? null : edu.id)
+                  setOpenId(isOpen ? null : proj.id)
                 }
                 className="w-full flex items-center justify-between py-2 px-2 text-left bg-primary/5"
               >
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">
-                    {edu.degree || "Untitled Degree"}
+                    {proj.name || "Untitled Project"}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {edu.institution || "Institution"}{" "}
-                    {edu.start_date && `• ${edu.start_date}`}
+                    {proj.link || "No link"}
                   </span>
                 </div>
 
@@ -133,7 +126,7 @@ export function EducationStep() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation()
-                      removeEducation(edu.id)
+                      remove(proj.id)
                     }}
                     className="text-muted-foreground hover:text-destructive"
                   >
@@ -154,83 +147,39 @@ export function EducationStep() {
                 <div className="overflow-hidden space-y-4 pt-2">
 
                   <CustomInput
-                    label="Institution"
-                    value={edu.institution}
+                    label="Project Name"
+                    value={proj.name}
                     onChange={(e) =>
-                      updateItem(edu.id, "institution", e.target.value)
+                      updateItem(proj.id, "name", e.target.value)
                     }
                     required
                   />
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <CustomInput
-                      label="Degree"
-                      value={edu.degree || ""}
-                      onChange={(e) =>
-                        updateItem(edu.id, "degree", e.target.value)
-                      }
-                    />
-
-                    <CustomInput
-                      label="Field of Study"
-                      value={edu.field_of_study || ""}
-                      onChange={(e) =>
-                        updateItem(edu.id, "field_of_study", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <CustomInput
-                      type="date"
-                      label="Start Date"
-                      value={edu.start_date || ""}
-                      onChange={(e) =>
-                        updateItem(edu.id, "start_date", e.target.value)
-                      }
-                    />
-
-                    {!edu.current && (
-                      <CustomInput
-                        type="date"
-                        label="End Date"
-                        value={edu.end_date || ""}
-                        onChange={(e) =>
-                          updateItem(edu.id, "end_date", e.target.value)
-                        }
-                      />
-                    )}
-                  </div>
-
-                  {/* CURRENT */}
-                  <label className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={edu.current || false}
-                      onChange={(e) =>
-                        updateItem(edu.id, "current", e.target.checked)
-                      }
-                    />
-                    I currently study here
-                  </label>
-
                   <CustomInput
-                    label="Grade"
-                    value={edu.grade || ""}
+                    label="Project Link"
+                    value={proj.link || ""}
                     onChange={(e) =>
-                      updateItem(edu.id, "grade", e.target.value)
+                      updateItem(proj.id, "link", e.target.value)
                     }
-                    placeholder="e.g First Class, 4.5 GPA"
+                    placeholder="https://..."
                   />
 
                   <CustomInput
                     label="Description"
                     isTextArea
-                    value={edu.description || ""}
+                    value={proj.description || ""}
                     onChange={(e) =>
-                      updateItem(edu.id, "description", e.target.value)
+                      updateItem(proj.id, "description", e.target.value)
                     }
-                    placeholder="Relevant coursework, achievements..."
+                    placeholder="What did you build? What impact did it have?"
+                  />
+
+                  {/* 🔥 TECHNOLOGIES (TAG INPUT) */}
+                  <TechInput
+                    value={proj.technologies || []}
+                    onChange={(val) =>
+                      updateItem(proj.id, "technologies", val)
+                    }
                   />
                 </div>
               </div>
@@ -249,11 +198,11 @@ export function EducationStep() {
       {/* ADD */}
       <Button
         variant="ghost"
-        onClick={addEducation}
+        onClick={addProject}
         className="w-full justify-center text-sm"
       >
         <Plus size={14} className="mr-2" />
-        Add Education
+        Add Project
       </Button>
     </div>
   )

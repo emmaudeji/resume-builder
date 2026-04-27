@@ -45,7 +45,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
           {description && <small className="text-foreground/60">{description}</small>}
         </div>
       )}
-      <div className={cn("flex items-center pl-2 gap-2 border border-gray-600    w-full", innerwrapperStyle, error ? "border-red-500" : "")}>
+      <div className={cn("flex items-center pl-2 gap-2 border rounded-lg  w-full", innerwrapperStyle, error ? "border-red-500" : "")}>
         {isPassword ? (
           <button
             type="button"

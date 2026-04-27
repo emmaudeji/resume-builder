@@ -2,61 +2,59 @@
 
 import { useMemo } from "react"
 import { useResumeBuilder } from "@/context/resume-builder.context"
- 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-
-import { cn } from "@/lib/utils"
 import { calculateResumeScore } from "@/lib/resume-progress"
 
 const COLORS = {
-  primary: "#4f46e5", // modern indigo (matches shadcn vibe)
+  primary: "#4f46e5",
   muted: "#e5e7eb",
   text: "#111827",
 }
-function CircleProgress({ value }: { value: number }) {
-  const radius = 18
-  const stroke = 4
-  const normalizedRadius = radius - stroke * 2
-  const circumference = normalizedRadius * 2 * Math.PI
 
-  const strokeDashoffset =
+function CircleProgress({ value }: { value: number }) {
+  const size = 64
+  const stroke = 5
+  const radius = (size - stroke) / 2
+  const circumference = 2 * Math.PI * radius
+
+  const offset =
     circumference - (value / 100) * circumference
 
-  const COLORS = {
-    primary: "#4f46e5",
-    muted: "#e5e7eb",
-    text: "#111827",
-  }
-
   return (
-    <svg height={80} width={80}>
-      {/* BACK CIRCLE */}
+    <svg
+      width={size}
+      height={size}
+      className="shrink-0"
+    >
+      {/* BACK */}
       <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
         stroke={COLORS.muted}
-        fill="transparent"
         strokeWidth={stroke}
-        r={normalizedRadius}
-        cx={24}
-        cy={24}
+        fill="transparent"
       />
 
-      {/* PROGRESS CIRCLE */}
+      {/* PROGRESS */}
       <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
         stroke={COLORS.primary}
-        fill="transparent"
         strokeWidth={stroke}
+        fill="transparent"
         strokeLinecap="round"
-        strokeDasharray={`${circumference} ${circumference}`}
-        strokeDashoffset={strokeDashoffset}
-        r={normalizedRadius}
-        cx={24}
-        cy={24}
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        className="transition-all duration-500 ease-out"
         style={{
-          transition: "stroke-dashoffset 0.5s ease",
+          transform: "rotate(-90deg)",
+          transformOrigin: "50% 50%",
         }}
       />
 
@@ -65,11 +63,11 @@ function CircleProgress({ value }: { value: number }) {
         x="50%"
         y="50%"
         textAnchor="middle"
-        dy=".3em"
-        fill={COLORS.text}
-        className="text-xs font-semibold"
+        dominantBaseline="middle"
+        fill={COLORS.primary}
+        className="text-blue-500 text-[11px] font-semibold"
       >
-        {value}
+        {value}%
       </text>
     </svg>
   )
@@ -85,28 +83,42 @@ export function ResumeScore() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild className="shrink-0">
-        <button className="flex items-center gap-2 hover:scale-105 transition">
-          <CircleProgress value={data.score} />
-          <div className="text-xs md:text-sm">
-            <p className="font-medium">Resume Score</p>
-            <p className="text-muted-foreground text-xs">
-              Click for insights
+      <PopoverTrigger asChild>
+        <button className="flex items-center gap-3 hover:scale-[1.02] transition-transform">
+          <CircleProgress value={data.score}  />
+
+          <div className="text-left">
+            <p className="text-sm font-medium">
+              Resume Score
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {data.score >= 80
+                ? "Strong profile"
+                : "Needs improvement"}
             </p>
           </div>
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-80 space-y-3">
+      <PopoverContent
+        align="end"
+        className="w-80 space-y-4"
+      >
+        {/* HEADER */}
         <div>
-          <h3 className="font-semibold">AI Resume Analysis</h3>
+          <h3 className="font-semibold">
+            AI Resume Analysis
+          </h3>
           <p className="text-sm text-muted-foreground">
             Your resume is {data.score}% optimized
           </p>
         </div>
 
+        {/* INSIGHTS */}
         <div className="space-y-2">
-          <p className="text-sm font-medium">Recommendations</p>
+          <p className="text-sm font-medium">
+            Recommendations
+          </p>
 
           {data.insights.length === 0 ? (
             <p className="text-sm text-green-600">
@@ -119,13 +131,18 @@ export function ResumeScore() {
                   key={i}
                   className="text-sm text-muted-foreground flex gap-2"
                 >
-                  <span className="text-primary">•</span>
+                  <span className="text-primary mt-[2px]">•</span>
                   {item}
                 </li>
               ))}
             </ul>
           )}
         </div>
+
+        {/* FOOTER HINT */}
+        <p className="text-xs text-muted-foreground">
+          Improve your score to increase recruiter visibility.
+        </p>
       </PopoverContent>
     </Popover>
   )

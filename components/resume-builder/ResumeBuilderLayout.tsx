@@ -9,10 +9,12 @@ import { AppSheet } from "../shared/AppSheet"
 import { Grid2X2 } from "lucide-react"
 import { ResumeRenderer } from "./ResumeRenderer"
 import { ResumeFormLayout } from "../resume-forms/ResumeFormLayout"
+import { ThemeProvider } from "@/context/theme-provider"
+import { ThemeStudio } from "../resume-theme-templates/ThemeStudio"
 
 const ResumeBuilderLayout = () => {
   const [type, setType] = useState<"edit" | "customize">("edit")
-  const { step } = useResumeBuilder()
+  const { step, resume } = useResumeBuilder()
 
   return (
     <section className="flex flex-col h-screen bg-muted/30">
@@ -82,14 +84,17 @@ const ResumeBuilderLayout = () => {
             {type === "edit" ? (
               <ResumeFormLayout />
             ) : (
-              <div>ThemeCustomization</div>
+              <ThemeStudio/>
             )}
            
         </aside>
 
         {/* 🖥️ RIGHT PANEL (PREVIEW CANVAS) */}
         <main className="hidden md:flex items-start justify-center overflow-auto bg-muted/40 p-6">
-           <ResumeRenderer />
+          <ThemeProvider theme={resume.theme}>
+            <ResumeRenderer  />
+          </ThemeProvider>
+           {/* <ResumeRenderer /> */}
         </main>
       </section>
     </section>

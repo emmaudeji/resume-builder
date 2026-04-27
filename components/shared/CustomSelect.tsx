@@ -55,10 +55,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       )}
 
       <Select onValueChange={onChange} value={value} name={name} disabled={disabled}>
-        <SelectTrigger id={name} className={`w-full max-h-14 text-base px-2  border-zinc-700 ${error ? "border-red-500" : ""}`}>
+        <SelectTrigger id={name} className={`w-full  text-base px-2  ${error ? "border-red-500" : ""}`}>
           <SelectValue className="text-base  " placeholder={placeholder}  />
         </SelectTrigger>
-        <SelectContent className="bg-background">
+        <SelectContent className="text-lg">
           {Array.isArray(options) &&
             options.map((option, index) => {
               if ("options" in option) {
@@ -66,7 +66,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                   <SelectGroup key={index}>
                     <SelectLabel>{option.label}</SelectLabel>
                     {option.options.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
+                      <SelectItem key={opt.value} value={opt.value} className="text-lg">
                         {opt.label}
                       </SelectItem>
                     ))}

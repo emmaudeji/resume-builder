@@ -74,3 +74,88 @@ export function calculateProgress(resume: Resume): ProgressResult {
     next: getNext(resume),
   }
 }
+
+
+type Insight = {
+  type: "warning" | "improvement" | "success"
+  title: string
+  message: string
+}
+
+export function generateResumeInsights(resume: Resume) {
+  const { breakdown } = calculateProgress(resume)
+
+  const insights: Insight[] = []
+
+  // 🔹 PERSONAL
+  if (breakdown.personal < 15) {
+    insights.push({
+      type: "warning",
+      title: "Incomplete Personal Details",
+      message:
+        "Add your full name, job title, and contact details to improve recruiter trust.",
+    })
+  } else if (breakdown.personal < 30) {
+    insights.push({
+      type: "improvement",
+      title: "Improve Personal Section",
+      message:
+        "Consider adding phone number or job title to strengthen your profile.",
+    })
+  } else {
+    insights.push({
+      type: "success",
+      title: "Strong Personal Section",
+      message: "Your personal details are well optimized.",
+    })
+  }
+
+  // 🔹 SUMMARY
+  if (breakdown.summary === 0) {
+    insights.push({
+      type: "warning",
+      title: "Missing Summary",
+      message:
+        "A professional summary increases recruiter engagement significantly.",
+    })
+  }
+
+  // 🔹 EXPERIENCE
+  if (breakdown.experience === 0) {
+    insights.push({
+      type: "warning",
+      title: "No Work Experience",
+      message:
+        "Add at least one experience to improve your chances of getting hired.",
+    })
+  } else if (breakdown.experience < 25) {
+    insights.push({
+      type: "improvement",
+      title: "Enhance Experience",
+      message:
+        "Add achievements and measurable results to make your experience stand out.",
+    })
+  }
+
+  // 🔹 SKILLS
+  if (breakdown.skills === 0) {
+    insights.push({
+      type: "warning",
+      title: "No Skills Listed",
+      message:
+        "Skills help your resume pass ATS filters. Add relevant skills.",
+    })
+  }
+
+  // 🔹 EDUCATION
+  if (breakdown.education === 0) {
+    insights.push({
+      type: "improvement",
+      title: "Add Education",
+      message:
+        "Education adds credibility, especially for early-career roles.",
+    })
+  }
+
+  return insights
+}

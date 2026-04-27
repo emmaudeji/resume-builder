@@ -1,16 +1,16 @@
-export type Theme = {
-  template_id: string // "modern" | "classic"
+// export type Theme = {
+//   template_id: string // "modern" | "classic"
 
-  color: string // primary color
-  font: string // "inter", "roboto"
+//   color: string // primary color
+//   font: string // "inter", "roboto"
 
-  layout: "single-column" | "two-column"
-  spacing: "compact" | "comfortable"
+//   layout: "single-column" | "two-column"
+//   spacing: "compact" | "comfortable"
 
-  font_size: "sm" | "md" | "lg"
+//   font_size: "sm" | "md" | "lg"
 
-  show_icons?: boolean
-}
+//   show_icons?: boolean
+// }
 
 export type ResumeSettings = {
   show_section_headings: boolean

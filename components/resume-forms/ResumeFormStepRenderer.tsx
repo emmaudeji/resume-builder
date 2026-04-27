@@ -1,8 +1,12 @@
 import { useResumeBuilder } from "@/context/resume-builder.context"
-import SummaryForm from "./SummaryForm"
-import { PersonalStep } from "./PersonalForm"
-import ExeperienceForm from "./ExeperienceForm"
-import EducationForm from "./EducationForm"
+import  { SummaryStep } from "./SummaryStep"
+import { PersonalStep } from "./PersonalStep"
+  import { ExperienceStep } from "./ExperienceStep"
+import { EducationStep } from "./EducationForm"
+ import { CertificationStep } from "./CertificationForm"
+import { SkillsStep } from "./SkillStep"
+import { ProjectStep } from "./ProjectsStep"
+import { ReviewStep } from "./ReviewStep"
 
 export function ResumeFormStepRenderer() {
   const { step } = useResumeBuilder()
@@ -11,14 +15,19 @@ export function ResumeFormStepRenderer() {
     case "personal":
       return <PersonalStep/>
     case "experience":
-      return <ExeperienceForm/>
+      return <ExperienceStep/>
     case "education":
-      return <EducationForm/>
+      return <EducationStep/>
     case "certifications":
-      return <EducationForm/>
+      return <CertificationStep/>
     case "summary":
-      return <SummaryForm/>
-    
+      return <SummaryStep/>
+    case "skills":
+      return <SkillsStep/>
+    case "projects":
+      return <ProjectStep/>
+    case "review":
+      return <ReviewStep/>
     default:
       return null
   }

@@ -9,18 +9,19 @@ export type Resume = {
   updatedAt: string
 
   // ✅ Flat sections (clean access)
-  personal: PersonalSection
-  summary: SummarySection
-  experience: ExperienceSection
-  education: EducationSection
-  skills: SkillsSection
-  projects?: ProjectSection
-  certifications?: CertificationSection
-  languages?: LanguageSection
-  custom?: CustomSection
+  personal: PersonalSectionProp
+  summary: SummarySectionProp
+  experience: ExperienceSectionProp
+  education: EducationSectionProp
+  skills: SkillsSectionProp
+  projects?: ProjectSectionProp
+  certifications?: CertificationSectionProp
+  languages?: LangaugeSectionProp
+  custom?: CustomSectionProp
 
   // 🎨 Design
   theme: Theme
+  templateId: string,
 
   // ⚙️ Settings
   settings: ResumeSettings
@@ -28,6 +29,8 @@ export type Resume = {
   // 🤖 AI
   ai?: AIData
 }
+
+
 
 export type Section = {
   id: string
@@ -100,7 +103,7 @@ export type PersonalSectionProp = BaseSection & {
   avatar?: string
 }
 export type SummarySectionProp = {
-  content: string
+  summary: string
 }
 
 export type Experience  = {
@@ -139,6 +142,9 @@ export type EducationSectionProp = BaseSection & {
   items: Education[]
 }
 
+export type SummarySection = BaseSection & {
+  summary:string
+}
 export interface License {
   user_id?: string,
   id?: string
@@ -157,6 +163,7 @@ export type CertificationSectionProp = BaseSection & {
 }
 
 export type SkillsSectionProp = BaseSection & {
+  show_level:boolean,
   items: {
     name: string
     level?: number // 1–5 (optional)
@@ -194,3 +201,32 @@ export type CustomSectionProp = BaseSection & {
   }[]
 }
 
+export type Theme = {
+  id: string
+  name: string
+
+  // 🎨 Brand colors
+  primary: string
+  secondary?: string
+  accent?: string
+
+  // 🌗 Mode
+  mode: "light" | "dark"
+
+  // ✍️ Typography system
+  font_family: string          // "inter", "poppins", "serif", etc
+  font_secondary?: string      // optional fallback or headings font
+
+  font_size: number            // base scale (14 - 18 recommended)
+  line_height: number          // e.g 1.4 - 1.8
+
+  // 🧱 Layout behavior (template engine core)
+  density: "compact" | "normal" | "spacious"
+  radius: "none" | "sm" | "md" | "lg"
+
+  // 🧠 AI + template classification
+  style: "modern" | "corporate" | "creative" | "minimal" | "executive"
+
+  // ✨ Optional polish (keep minimal but powerful)
+  shadow: "none" | "soft" | "medium"
+}

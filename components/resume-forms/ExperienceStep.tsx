@@ -6,28 +6,27 @@ import { Button } from "@/components/ui/button"
 import { useCallback, useState } from "react"
 import { Trash2, Plus, ChevronDown } from "lucide-react"
 import { v4 as uuid } from "uuid"
+import { HighlightsInput } from "./HighlightsInput"
+import { Experience } from "@/types/resume"
 import { cn } from "@/lib/utils"
-import { Education } from "@/types/resume"
 
-export function EducationStep() {
+export function ExperienceStep() {
   const { resume, update } = useResumeBuilder()
-  const items = resume.education.items as Education[]
+  const items = resume.experience.items as Experience[]
+  const [error, setError] = useState<string | null>(null)
 
   const [openId, setOpenId] = useState<string | null>(
     items[0]?.id || null
   )
 
-  const [error, setError] = useState<string | null>(null)
-
-  // 🔍 VALIDATION
-  const canAdd = useCallback(() => {
+  const canAddExperience = useCallback(() => {
     const invalid = items.find(
-      (item) => !item.institution?.trim()
+      (item) => !item.role?.trim() || !item.company_name?.trim()
     )
 
     if (invalid) {
-      setOpenId(invalid.id)
-      setError("Please add institution before adding another education")
+      setOpenId(invalid.id) // 🔥 focus the problem
+      setError("Please add Job Title and Company before adding another experience")
       return false
     }
 
@@ -36,33 +35,33 @@ export function EducationStep() {
   }, [items])
 
   // ➕ ADD
-  const addEducation = useCallback(() => {
-    if (!canAdd()) return
+ const addExperience = useCallback(() => {
+    if (!canAddExperience()) return
 
-    const newItem: Education = {
+    const newItem = {
       id: uuid(),
       user_id: resume.userId || "",
-      institution: "",
-      degree: "",
-      field_of_study: "",
+      company_name: "",
+      role: "",
+      location: "",
       start_date: "",
       end_date: "",
       current: false,
-      grade: "",
       description: "",
+      highlights: [],
     }
 
-    update("education", {
+    update("experience", {
       items: [...items, newItem],
     })
 
     setOpenId(newItem.id)
-  }, [items, update, resume.userId, canAdd])
+  }, [items, update, resume.userId, canAddExperience])
 
   // ❌ REMOVE
-  const removeEducation = useCallback(
+  const removeExperience = useCallback(
     (id: string) => {
-      update("education", {
+      update("experience", {
         items: items.filter((i) => i.id !== id),
       })
     },
@@ -72,9 +71,9 @@ export function EducationStep() {
   // ✏️ UPDATE
   const updateItem = useCallback(
     (id: string, field: string, value: any) => {
-      setError(null)
+      setError(null) // 🔥 clears instantly
 
-      update("education", {
+      update("experience", {
         items: items.map((item) =>
           item.id === id ? { ...item, [field]: value } : item
         ),
@@ -83,40 +82,42 @@ export function EducationStep() {
     [items, update]
   )
 
+
   return (
     <div className="space-y-4">
-
+      
       {/* HEADER */}
       <div>
-        <h2 className="text-lg font-semibold">Education</h2>
+        <h2 className="text-lg font-semibold">Work Experience</h2>
         <p className="text-sm text-muted-foreground">
-          Add your academic background.
+          Focus on achievements, not responsibilities.
         </p>
       </div>
 
       {/* LIST */}
-      <div className="space-y-2">
-        {items.map((edu, index) => {
-          const isOpen = openId === edu.id
+      <div className="space-y-">
+        {items.map((exp, index) => {
+          const isOpen = openId === exp.id
 
           return (
-            <div key={edu.id}>
+            <div key={exp.id} className=" ">
 
               {/* 🔹 HEADER ROW */}
               <button
                 type="button"
                 onClick={() =>
-                  setOpenId(isOpen ? null : edu.id)
+                  setOpenId(isOpen ? null : exp.id)
                 }
-                className="w-full flex items-center justify-between py-2 px-2 text-left bg-primary/5"
+                className="w-full flex items-center justify-between py-2 bg-primary/5 px-2 text-left"
               >
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">
-                    {edu.degree || "Untitled Degree"}
+                    {exp.role || "Untitled Role"}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {edu.institution || "Institution"}{" "}
-                    {edu.start_date && `• ${edu.start_date}`}
+                    {exp.company_name || "Company"}{" "}
+                    {exp.start_date &&
+                      `• ${exp.start_date}`}
                   </span>
                 </div>
 
@@ -133,7 +134,7 @@ export function EducationStep() {
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation()
-                      removeEducation(edu.id)
+                      removeExperience(exp.id)
                     }}
                     className="text-muted-foreground hover:text-destructive"
                   >
@@ -142,10 +143,10 @@ export function EducationStep() {
                 </div>
               </button>
 
-              {/* 🔥 COLLAPSIBLE */}
+              {/* 🔥 COLLAPSIBLE CONTENT */}
               <div
                 className={cn(
-                  "grid transition-all duration-300",
+                  "grid transition-all duration-300 ease-in-out",
                   isOpen
                     ? "grid-rows-[1fr] opacity-100"
                     : "grid-rows-[0fr] opacity-0"
@@ -154,28 +155,27 @@ export function EducationStep() {
                 <div className="overflow-hidden space-y-4 pt-2">
 
                   <CustomInput
-                    label="Institution"
-                    value={edu.institution}
+                    label="Job Title"
+                    value={exp.role}
                     onChange={(e) =>
-                      updateItem(edu.id, "institution", e.target.value)
+                      updateItem(exp.id, "role", e.target.value)
                     }
-                    required
                   />
 
                   <div className="grid grid-cols-2 gap-4">
                     <CustomInput
-                      label="Degree"
-                      value={edu.degree || ""}
+                      label="Company"
+                      value={exp.company_name}
                       onChange={(e) =>
-                        updateItem(edu.id, "degree", e.target.value)
+                        updateItem(exp.id, "company_name", e.target.value)
                       }
                     />
 
                     <CustomInput
-                      label="Field of Study"
-                      value={edu.field_of_study || ""}
+                      label="Location"
+                      value={exp.location || ""}
                       onChange={(e) =>
-                        updateItem(edu.id, "field_of_study", e.target.value)
+                        updateItem(exp.id, "location", e.target.value)
                       }
                     />
                   </div>
@@ -184,53 +184,49 @@ export function EducationStep() {
                     <CustomInput
                       type="date"
                       label="Start Date"
-                      value={edu.start_date || ""}
+                      value={exp.start_date}
                       onChange={(e) =>
-                        updateItem(edu.id, "start_date", e.target.value)
+                        updateItem(exp.id, "start_date", e.target.value)
                       }
                     />
 
-                    {!edu.current && (
+                    {!exp.current && (
                       <CustomInput
                         type="date"
                         label="End Date"
-                        value={edu.end_date || ""}
+                        value={exp.end_date || ""}
                         onChange={(e) =>
-                          updateItem(edu.id, "end_date", e.target.value)
+                          updateItem(exp.id, "end_date", e.target.value)
                         }
                       />
                     )}
                   </div>
 
-                  {/* CURRENT */}
                   <label className="flex items-center gap-2 text-sm">
                     <input
                       type="checkbox"
-                      checked={edu.current || false}
+                      checked={exp.current || false}
                       onChange={(e) =>
-                        updateItem(edu.id, "current", e.target.checked)
+                        updateItem(exp.id, "current", e.target.checked)
                       }
                     />
-                    I currently study here
+                    I currently work here
                   </label>
-
-                  <CustomInput
-                    label="Grade"
-                    value={edu.grade || ""}
-                    onChange={(e) =>
-                      updateItem(edu.id, "grade", e.target.value)
-                    }
-                    placeholder="e.g First Class, 4.5 GPA"
-                  />
 
                   <CustomInput
                     label="Description"
                     isTextArea
-                    value={edu.description || ""}
+                    value={exp.description || ""}
                     onChange={(e) =>
-                      updateItem(edu.id, "description", e.target.value)
+                      updateItem(exp.id, "description", e.target.value)
                     }
-                    placeholder="Relevant coursework, achievements..."
+                  />
+
+                  <HighlightsInput
+                    highlights={exp.highlights || []}
+                    onChange={(val) =>
+                      updateItem(exp.id, "highlights", val)
+                    }
                   />
                 </div>
               </div>
@@ -239,22 +235,24 @@ export function EducationStep() {
         })}
       </div>
 
-      {/* ERROR */}
-      {error && (
-        <div className="text-xs text-destructive animate-in fade-in slide-in-from-bottom-1">
-          {error}
-        </div>
-      )}
-
       {/* ADD */}
-      <Button
-        variant="ghost"
-        onClick={addEducation}
-        className="w-full justify-center text-sm"
-      >
-        <Plus size={14} className="mr-2" />
-        Add Education
-      </Button>
+      <div className="">
+        {error && (
+          <div className="text-xs text-destructive animate-in fade-in slide-in-from-bottom-1">
+            {error}
+          </div>
+        )}
+        <Button
+          variant="ghost"
+          onClick={addExperience}
+          className="w-full justify-center text-sm"
+        >
+          <Plus size={14} className="mr-2" />
+          Add Experience
+        </Button>
+      </div>
+      
     </div>
   )
 }
+

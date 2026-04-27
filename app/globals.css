@@ -195,20 +195,110 @@
 
     /* custom */
     @layer utilities {
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
-  }
+      .gradient-text {
+        @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
+      }
 
-  .glass {
-    background: oklch(1 0 0 / 0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-  }
+      .glass {
+        background: oklch(1 0 0 / 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+      }
 
-  .glass-dark {
-    background: oklch(0.2 0 0 / 0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-  }
-}
+      .glass-dark {
+        background: oklch(0.2 0 0 / 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+      }
+    }
+
+    /* =========================
+   🔥 HIDE SCROLLBAR (FULL)
+   ========================= */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE + Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none; /* Chrome, Safari */
+    }
+
+    /* =========================
+      🔥 THIN SCROLLBAR (MODERN)
+      ========================= */
+    .thin-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+
+    /* Chrome / Edge / Safari */
+    .thin-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px; /* horizontal */
+    }
+
+    .thin-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .thin-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 999px;
+      transition: background 0.2s ease;
+    }
+
+    .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* =========================
+      🔥 ULTRA MINIMAL SCROLLBAR
+      (almost invisible, premium SaaS feel)
+      ========================= */
+    .mini-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+    }
+
+    .mini-scrollbar::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+
+    .mini-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .mini-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 999px;
+    }
+
+    .mini-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    /* =========================
+      🔥 DARK MODE SUPPORT
+      ========================= */
+    .dark .thin-scrollbar {
+      scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+    }
+
+    .dark .thin-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .dark .mini-scrollbar {
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    }
+
+    .dark .mini-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+    }
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ResumeFormStepRenderer } from "./ResumeFormStepRenderer"
 import { ChevronLeft, ChevronRight, Check } from "lucide-react"
 import { ResumeScore } from "../resume-builder/ResumeScore"
+import { StepNavigation } from "./StepNavigation"
 
 export function ResumeFormLayout() {
   const { resume, next, prev, step, submit } = useResumeBuilder()
@@ -21,30 +22,14 @@ export function ResumeFormLayout() {
       
       {/* 🔥 HEADER */}
       <section className="border-b px-5 py-3 bg-background flex items-center gap-3 justify-between">
-        <div className="space-y-3 w-full">
-          
-          {/* TOP ROW */}
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium capitalize">{step}</span>
-            <span className="text-muted-foreground">
-              {progress.percentage}%
-            </span>
-          </div>
-
-          {/* PROGRESS BAR */}
-          <Progress value={progress.percentage} className="h-2" />
-
-          {/* NEXT HINT */}
-          <p className="text-xs text-muted-foreground">
-            {progress.next}
-          </p>
-        </div>
+         <StepNavigation/>
 
         <ResumeScore />
+        
       </section>
 
       {/* 🧾 BODY */}
-      <section className="flex-1 overflow-y-auto p-4  w-full  max-w-2xl mx-auto">
+      <section className="flex-1 overflow-y-auto p-4  w-full  max-w-3xl mx-auto">
         <ResumeFormStepRenderer />
       </section>
 
