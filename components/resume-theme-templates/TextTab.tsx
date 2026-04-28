@@ -1,15 +1,49 @@
+"use client"
+
+import { useResumeBuilder } from "@/context/resume-builder.context"
+import { FontFamilySelect } from "./FontFamilySelect"
+import { FontSizeControl } from "./FontSizeControl"
+import { LineHeightControl } from "./LineHeightControl"
+import { FONT_OPTIONS } from "@/constants/resume-constants"
+
 export function TextTab() {
+  const { resume, update } = useResumeBuilder()
+  const theme = resume.theme
+
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-medium">Typography</h3>
+    <div className="space-y-6 p-4 py-8 max-w-2xl mx-auto">
 
-      <p className="text-xs text-muted-foreground">
-        Text styling controls will help improve readability and ATS scoring.
-      </p>
+        <div className="grid sm:grid-cols-2 gap-6">
+            <FontFamilySelect
+                value={theme.font_family}
+                onChange={(val) =>
+                update("theme", { ...theme, font_family: val })
+                }
+            />
 
-      <div className="text-sm text-muted-foreground">
-        Coming next: font scaling, spacing, AI readability tuning
-      </div>
+            <FontFamilySelect
+                value={theme.font_secondary || FONT_OPTIONS[0].value}
+                onChange={(val) =>
+                update("theme", { ...theme, font_secondary: val })
+                }
+            />
+        </div>
+
+      
+
+      <FontSizeControl
+        value={theme.font_size}
+        onChange={(val) =>
+          update("theme", { ...theme, font_size: val })
+        }
+      />
+
+      <LineHeightControl
+        value={theme.line_height}
+        onChange={(val) =>
+          update("theme", { ...theme, line_height: val })
+        }
+      />
     </div>
   )
 }

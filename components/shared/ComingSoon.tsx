@@ -7,7 +7,7 @@ import { CustomButton } from "./CustomButton";
 import { LinkButton } from "./LinkButton";
 import { urls } from "@/constants";
 
-export default function ComingSoon() {
+export default function ComingSoon({href=urls.base}:{href?:string}) {
   return (
     <div className="min-h-[60vh] flex h-full flex-col items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md border border-border/50 shadow-sm -2xl">
@@ -41,7 +41,7 @@ export default function ComingSoon() {
         </CardContent>
 
         <CardFooter>
-          <LinkButton href={urls.base} className="w-full"> <ArrowLeft/> Back to Home</LinkButton >
+          <LinkButton href={href} className="w-full"> <ArrowLeft/> Back to Home</LinkButton >
         </CardFooter>
       </Card>
     </div>

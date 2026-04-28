@@ -16,16 +16,30 @@ export const initialResume: Resume = {
     visible: true,
     order: 0,
 
-    full_name: "",
+    first_name: "",
+    last_name: "",
     job_title: "",
+
     email: "",
     phone: "",
-    location: "",
     website: "",
     linkedin: "",
     github: "",
+
+    address: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    country: "",
+
+    driving_license: "",
+    place_of_birth: "",
+    date_of_birth: "",
+    nationality: "",
+
+    show_additional_details: false,
+
     avatar: "",
-    more: {},
   },
 
   // 📝 SUMMARY
@@ -33,8 +47,7 @@ export const initialResume: Resume = {
     label: "Professional Summary",
     visible: true,
     order: 1,
-
-    content: "",
+    summary: "",
   },
 
   // 💼 EXPERIENCE
@@ -43,20 +56,7 @@ export const initialResume: Resume = {
     visible: true,
     order: 2,
 
-    items: [
-      {
-        id: crypto.randomUUID(),
-        user_id: "user_1",
-        company_name: "",
-        role: "",
-        location: "",
-        start_date: "",
-        end_date: "",
-        current: false,
-        description: "",
-        highlights: [],
-      },
-    ],
+    items: [],
   },
 
   // 🎓 EDUCATION
@@ -65,20 +65,7 @@ export const initialResume: Resume = {
     visible: true,
     order: 3,
 
-    items: [
-      {
-        id: crypto.randomUUID(),
-        user_id: "user_1",
-        institution: "",
-        degree: "",
-        field_of_study: "",
-        start_date: "",
-        end_date: "",
-        current: false,
-        grade: "",
-        description: "",
-      },
-    ],
+    items: [],
   },
 
   // 🛠️ SKILLS
@@ -86,16 +73,15 @@ export const initialResume: Resume = {
     label: "Skills",
     visible: true,
     order: 4,
-
+    show_level: true,
     items: [],
   },
 
-  // 🚀 PROJECTS (optional but initialized for UX)
+  // 🚀 PROJECTS
   projects: {
     label: "Projects",
     visible: false,
     order: 5,
-
     items: [],
   },
 
@@ -104,7 +90,6 @@ export const initialResume: Resume = {
     label: "Certifications",
     visible: false,
     order: 6,
-
     items: [],
   },
 
@@ -113,7 +98,6 @@ export const initialResume: Resume = {
     label: "Languages",
     visible: false,
     order: 7,
-
     items: [],
   },
 
@@ -122,31 +106,40 @@ export const initialResume: Resume = {
     label: "Custom Section",
     visible: false,
     order: 8,
-
     title: "",
     items: [],
   },
 
-  // 🎨 THEME
+  // 🎨 THEME (FIXED to match your Theme type)
   theme: {
-    templateId: "modern",
-    color: "#6C5CE7",
-    font: "Inter",
-    layout: "single-column",
-    spacing: "comfortable",
-    fontSize: "md",
-    showIcons: true,
+    id: "default",
+    name: "Default",
+
+    primary: "#6C5CE7",
+    secondary: "#111827",
+    accent: "#10b981",
+
+    mode: "light",
+
+    font_family: "inter",
+    font_secondary: "inter",
+
+    font_size: 14,
+    line_height: 1.6,
+
+    density: "normal",
+    radius: "md",
+
+    style: "modern",
+
+    shadow: "soft",
+    template: "modern-flow",
   },
 
-  // ⚙️ SETTINGS
-  settings: {
-    showSectionHeadings: true,
-    showDates: true,
-    pageSize: "A4",
-    hiddenSections: [],
-  },
+  // 🔗 TEMPLATE
+  templateId: "modern-flow",
 
-  // 🤖 AI
+  // 🤖 AI (safe minimal init)
   ai: {
     summarySuggestions: [],
     experienceSuggestions: {},
@@ -154,3 +147,11 @@ export const initialResume: Resume = {
     lastOptimizedAt: undefined,
   },
 }
+
+export const FONT_OPTIONS = [
+  { label: "Inter", value: "Inter" },
+  { label: "Poppins", value: "Poppins" },
+  { label: "Roboto", value: "Roboto" },
+  { label: "Lora", value: "Lora" },
+  { label: "Playfair Display", value: "Playfair Display" },
+]

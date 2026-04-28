@@ -1,30 +1,33 @@
 // Renderer.tsx
 import { useResumeBuilder } from "@/context/resume-builder.context"
-import { TEMPLATE_REGISTRY } from "./TemplateRegistry"
-import { Resume } from "@/types/resume"
+import { getTemplateById, TemplateProp } from "./TemplateRegistry"
+import { useMemo } from "react"
 
 export function ResumeRenderer( ) {
   const {resume} = useResumeBuilder()
   const theme = resume.theme
 
-  const Template =
-    TEMPLATE_REGISTRY[resume.templateId as keyof typeof TEMPLATE_REGISTRY] ||
-    TEMPLATE_REGISTRY["modern"]
+  const template = getTemplateById(theme.template)
 
+const TemplateComponent = useMemo(
+  () => template.component,
+  [template.id]
+) 
   return (
     <div 
         className="w-full h-full"
         style={{
           ["--primary" as any]: theme.primary,
+ 
+          ["--radius" as any]: "0.5rem",
+
           ["--font-size" as any]: `${theme.font_size}px`,
           ["--line-height" as any]: theme.line_height,
-          ["--radius" as any]: "0.5rem",
+          ["--font-family" as any]: theme.font_family,
+         
         }}
     >
-      <div
- 
-></div>
-      <Template resume={resume} />
+      <TemplateComponent resume={resume} />
     </div>
   )
 }
