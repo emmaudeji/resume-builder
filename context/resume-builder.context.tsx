@@ -111,6 +111,30 @@ export function ResumeBuilderProvider({
     [persist]
   )
 
+  // update resume field only, not section
+//   const updateField = useCallback(
+//   <K extends keyof Resume>(
+//     key: K,
+//     value: Resume[K]
+//   ) => {
+//     setResume((prev) => {
+//       const updated = {
+//         ...prev,
+//         [key]: value, // ✅ direct assignment (fix)
+//         updatedAt: new Date().toISOString(),
+//       }
+
+//       if (persist) {
+//         localStorage.setItem("resume_draft", JSON.stringify(updated))
+//       }
+
+//       return updated
+//     })
+//   },
+//   [persist]
+// )
+
+
   // 🔥 VALIDATION ENGINE
 const validateStep = useCallback(
   (step: Step): boolean => {

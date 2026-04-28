@@ -24,7 +24,7 @@ export type Resume = {
   templateId: string,
 
   // ⚙️ Settings
-  settings: ResumeSettings
+  // settings: ResumeSettings
 
   // 🤖 AI
   ai?: AIData
@@ -102,7 +102,7 @@ export type PersonalSectionProp = BaseSection & {
 
   avatar?: string
 }
-export type SummarySectionProp = {
+export type SummarySectionProp = BaseSection & {
   summary: string
 }
 
@@ -229,4 +229,7 @@ export type Theme = {
 
   // ✨ Optional polish (keep minimal but powerful)
   shadow: "none" | "soft" | "medium"
+
+  // templated id
+  template: string,
 }

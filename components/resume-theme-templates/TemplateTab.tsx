@@ -7,19 +7,10 @@ import { ColorPickerGroup } from "./ColorPickerGroup"
 
 export function TemplateTab() {
   const { resume, update } = useResumeBuilder()
-
+  
   return (
-    <div className="space-y-6">
-
-      {/* TEMPLATE SELECTOR */}
-      <TemplateSelector
-        value={resume.settings.template}
-        onChange={(template) =>
-          update("settings", { template })
-        }
-      />
-
-      {/* COLOR CUSTOMIZATION */}
+    <section className=" ">
+        {/* COLOR CUSTOMIZATION */}
       <ColorPickerGroup
         theme={resume.theme}
         onChange={(theme) =>
@@ -27,6 +18,17 @@ export function TemplateTab() {
         }
       />
 
-    </div>
+      {/* TEMPLATE SELECTOR */}
+      <TemplateSelector
+        value={resume.theme.template}
+        onChange={(templateId) =>{
+          update("theme", {template:templateId})
+        }
+        }
+      />
+
+      
+
+    </section>
   )
 }

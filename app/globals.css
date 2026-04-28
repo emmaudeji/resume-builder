@@ -198,6 +198,49 @@
       .gradient-text {
         @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
       }
+    
+      .padding {
+        @apply mx-auto max-w-7xl px-6
+      }
+      .padding4 {
+        @apply mx-auto max-w-4xl px-6 
+      }
+      .padding3 {
+        @apply mx-auto max-w-3xl px-6 
+      }
+
+      /* main {
+        @apply p-6 mx-auto max-w-[94rem]
+      } */
+
+      
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold leading-tight scroll-mt-24;
+      }
+
+      h1 {
+        @apply text-4xl md:text-5xl   tracking-tight;
+      }
+
+      h2 {
+        @apply text-3xl md:text-4xl tracking-tight;
+      }
+
+      h3 {
+        @apply text-2xl md:text-3xl;
+      }
+
+      h4 {
+        @apply text-xl sm:text-2xl font-semibold;
+      }
+
+      h5 {
+        @apply text-lg font-semibold ;
+      }
+
+      h6 {
+        @apply text-base font-semibold ;
+      }
 
       .glass {
         background: oklch(1 0 0 / 0.6);
@@ -211,6 +254,9 @@
         border: 1px solid var(--border);
       }
     }
+
+
+
 
     /* =========================
    🔥 HIDE SCROLLBAR (FULL)
@@ -301,4 +347,6 @@
     .dark .mini-scrollbar::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.12);
     }
+
+    
 }

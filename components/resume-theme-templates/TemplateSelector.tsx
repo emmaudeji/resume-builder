@@ -1,14 +1,10 @@
 "use client"
 
+import { useMemo, useState, useCallback } from "react"
 import { cn } from "@/lib/utils"
-
-const templates = [
-  { id: "modern", name: "Modern", preview: "/t1.png" },
-  { id: "classic", name: "Classic", preview: "/t2.png" },
-  { id: "minimal", name: "Minimal", preview: "/t3.png" },
-  { id: "executive", name: "Executive", preview: "/t4.png" },
-]
-
+import { Button } from "../ui/button"
+import { TEMPLATE_CATEGORIES, TemplateCategory, TEMPLATES } from "../resume-builder/TemplateRegistry"
+  
 export function TemplateSelector({
   value,
   onChange,
@@ -16,31 +12,71 @@ export function TemplateSelector({
   value: string
   onChange: (v: string) => void
 }) {
-  return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-medium">Choose Template</h3>
-      <p className="text-xs text-muted-foreground">
-        Select a layout style for your resume
-      </p>
+  const [activeCategory, setActiveCategory] = useState<TemplateCategory>("all")
+   
+  // 🔥 FILTERED LIST (memoized)
+  const filteredTemplates = useMemo(() => {
+    if (activeCategory === "all") return TEMPLATES
 
-      <div className="grid grid-cols-2 gap-3">
-        {templates.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => onChange(t.id)}
+    return TEMPLATES.filter((t) =>
+      t.category.includes(activeCategory)
+    )
+  }, [activeCategory])
+
+  const handleCategory = useCallback((cat: TemplateCategory) => {
+    setActiveCategory(cat)
+  }, [])
+
+
+  return (
+    <div className="space-y-5 w-full py-6 px-4">
+
+      {/* 🔥 CATEGORY FILTER */}
+      <div className="flex flex-wrap gap-2 justify-center">
+        {TEMPLATE_CATEGORIES.map((cat) => (
+          <Button
+            key={cat}
+            variant={activeCategory === cat ? "default" : "outline"}
+            onClick={() => handleCategory(cat)}
             className={cn(
-              "group border rounded-lg p-2 transition hover:shadow-md",
-              value === t.id && "border-primary shadow-sm"
+              "capitalize rounded-full text-xs sm:text-sm px-3 py-1.5 transition",
+              activeCategory === cat && "shadow-sm"
             )}
           >
-            <div className="aspect-[3/4] bg-muted rounded-md mb-2 overflow-hidden">
-              {/* replace with image later */}
-              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition" />
-            </div>
-
-            <p className="text-xs font-medium">{t.name}</p>
-          </button>
+            {cat.replace("-", " ")}
+          </Button>
         ))}
+      </div>
+
+      {/* 🧱 TEMPLATE GRID */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {filteredTemplates.map((t) => {
+          const isActive = value === t.id
+
+          return (
+            <button
+              key={t.id}
+              onClick={() => {
+                    onChange(t.id)
+                }}
+              className={cn(
+                "group rounded-lg transition text-left ",
+                "hover:scale-[1.02]",
+                isActive && "ring-2 ring-primary ring-offset-4"
+              )}
+            >
+              {/* PREVIEW */}
+              <div className="aspect-[3/4] bg-muted rounded-md overflow-hidden">
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition" />
+              </div>
+
+              {/* NAME */}
+              <p className="text-xs font-medium mt-1 truncate">
+                {t.name}
+              </p>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
