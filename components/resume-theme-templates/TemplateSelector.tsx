@@ -1,9 +1,9 @@
 "use client"
 
-import { useMemo, useState, useCallback } from "react"
+import { useMemo, useState, useCallback, act } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
-import { TEMPLATE_CATEGORIES, TemplateCategory, TEMPLATES } from "../resume-builder/TemplateRegistry"
+import { filteredTemplates, TEMPLATE_CATEGORIES, TemplateCategory, TEMPLATES } from "../resume-builder/TemplateRegistry"
   
 export function TemplateSelector({
   value,
@@ -15,19 +15,13 @@ export function TemplateSelector({
   const [activeCategory, setActiveCategory] = useState<TemplateCategory>("all")
    
   // 🔥 FILTERED LIST (memoized)
-  const filteredTemplates = useMemo(() => {
-    if (activeCategory === "all") return TEMPLATES
-
-    return TEMPLATES.filter((t) =>
-      t.category.includes(activeCategory)
-    )
-  }, [activeCategory])
+  const memoizedfilteredTemplates  = useMemo(() => filteredTemplates(activeCategory), [activeCategory])
 
   const handleCategory = useCallback((cat: TemplateCategory) => {
     setActiveCategory(cat)
   }, [])
 
-
+ 
   return (
     <div className="space-y-5 w-full py-6 px-4">
 
@@ -50,7 +44,7 @@ export function TemplateSelector({
 
       {/* 🧱 TEMPLATE GRID */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {filteredTemplates.map((t) => {
+        {memoizedfilteredTemplates.map((t) => {
           const isActive = value === t.id
 
           return (

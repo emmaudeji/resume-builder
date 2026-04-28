@@ -205,31 +205,30 @@ export type Theme = {
   id: string
   name: string
 
-  // 🎨 Brand colors
+  // 🎨 Colors
   primary: string
   secondary?: string
   accent?: string
 
-  // 🌗 Mode
   mode: "light" | "dark"
 
-  // ✍️ Typography system
-  font_family: string          // "inter", "poppins", "serif", etc
-  font_secondary?: string      // optional fallback or headings font
+  // ✍️ Typography
+  font_family: string
+  font_secondary?: string
 
-  font_size: number            // base scale (14 - 18 recommended)
-  line_height: number          // e.g 1.4 - 1.8
+  font_size: number
+  line_height: number
 
-  // 🧱 Layout behavior (template engine core)
+  // 🧱 Layout tokens (IMPORTANT)
   density: "compact" | "normal" | "spacious"
   radius: "none" | "sm" | "md" | "lg"
 
-  // 🧠 AI + template classification
+  // 🎯 Keep this ONLY for UI filtering (not styling)
   style: "modern" | "corporate" | "creative" | "minimal" | "executive"
 
-  // ✨ Optional polish (keep minimal but powerful)
+  // ✨ Polish
   shadow: "none" | "soft" | "medium"
 
-  // templated id
-  template: string,
+  // template id
+  template: string
 }
