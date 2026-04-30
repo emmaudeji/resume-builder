@@ -348,5 +348,12 @@
       background: rgba(255, 255, 255, 0.12);
     }
 
+    /* when printing, remove wrapper */
+    @media print {
+      .resume-preview-wrapper {
+        transform: none !important;
+      }
+    }
+
     
 }

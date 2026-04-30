@@ -7,6 +7,7 @@ import { applyThemeVariables } from "@/lib/theme-engine"
 import { ResumePreviewControls } from "./ResumePreviewControls"
 import { SAMPLE_RESUME } from "@/constants/sample-resume"
 import { TemplateTab } from "../resume-theme-templates/TemplateTab"
+import { ResumePreviewScale } from "./ResumePreviewScale"
 
 export function ResumeRenderer() {
   const { resume } = useResumeBuilder()
@@ -25,9 +26,9 @@ export function ResumeRenderer() {
   const [viewing, setViewing] = useState<"resume" | "sample" | "template">('resume')
 
   return (
-    <div className="relative w-full h-full space-y-1">
+    <div className="relative w-full h-full flex flex-col items-center space-y-1">
       
-      {/* 🎛️ FLOATING CONTROLS */}
+ 
       <ResumePreviewControls
         viewing={viewing}
         onToggle={setViewing} 
@@ -38,12 +39,18 @@ export function ResumeRenderer() {
         viewing === "template" ? 
           <TemplateTab /> 
           :
-          <div
-                className="w-full h-full bg-white"
-                style={applyThemeVariables(activeResume.theme)}
-              >
-            <TemplateComponent resume={activeResume} />
-          </div>
+          <ResumePreviewScale>
+            <div
+              className="bg-white overflow-hidden  text-[var(--resume-font-size)] leading-[var(--resume-line-height)] font-[var(--resume-font-family)]"
+              style={{
+                ...applyThemeVariables(activeResume.theme),
+                width: "794px",
+                height: "1123px",
+              }}
+            >
+              <TemplateComponent resume={activeResume} />
+            </div>
+          </ResumePreviewScale>
       }
     </div>
   )
