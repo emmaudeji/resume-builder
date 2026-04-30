@@ -1,25 +1,50 @@
+"use client"
+
 import { useResumeBuilder } from "@/context/resume-builder.context"
 import { getTemplateById } from "./TemplateRegistry"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { applyThemeVariables } from "@/lib/theme-engine"
+import { ResumePreviewControls } from "./ResumePreviewControls"
+import { SAMPLE_RESUME } from "@/constants/sample-resume"
+import { TemplateTab } from "../resume-theme-templates/TemplateTab"
 
 export function ResumeRenderer() {
   const { resume } = useResumeBuilder()
-  const theme = resume.theme
 
-  const template = getTemplateById(theme.template)
+  const [useSample, setUseSample] = useState(false)
+
+  const activeResume = useSample ? {...SAMPLE_RESUME, theme:  resume.theme } : resume
+
+  const template = getTemplateById(activeResume.theme.template)
 
   const TemplateComponent = useMemo(
     () => template.component,
     [template.id]
   )
 
+  const [viewing, setViewing] = useState<"resume" | "sample" | "template">('resume')
+
   return (
-    <div
-      className="w-full h-full bg-white"
-      style={applyThemeVariables(theme)}
-    >
-      <TemplateComponent resume={resume} />
+    <div className="relative w-full h-full space-y-1">
+      
+      {/* 🎛️ FLOATING CONTROLS */}
+      <ResumePreviewControls
+        viewing={viewing}
+        onToggle={setViewing} 
+        setUseSample={setUseSample}
+      />
+
+      {
+        viewing === "template" ? 
+          <TemplateTab /> 
+          :
+          <div
+                className="w-full h-full bg-white"
+                style={applyThemeVariables(activeResume.theme)}
+              >
+            <TemplateComponent resume={activeResume} />
+          </div>
+      }
     </div>
   )
 }

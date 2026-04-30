@@ -29,7 +29,7 @@ export function ResumeFormLayout() {
       </section>
 
       {/* 🧾 BODY */}
-      <section className="flex-1 overflow-y-auto p-4  w-full  max-w-3xl mx-auto">
+      <section className="flex-1 overflow-y-auto mini-scrollbar p-4  w-full  max-w-3xl mx-auto">
         <ResumeFormStepRenderer />
       </section>
 

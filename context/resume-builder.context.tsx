@@ -4,6 +4,7 @@ import React, { createContext, useContext, useMemo, useCallback, useState } from
 import { Resume, SectionType } from "@/types/resume"
 import { initialResume } from "@/constants/resume-constants"
 import { validatePersonal } from "@/validators"
+import { set } from "date-fns"
 
 type Step = SectionType | "review"
  
@@ -18,6 +19,7 @@ type ResumeBuilderContextType = {
   next: () => void
   prev: () => void
   goTo: (step: Step) => void
+  resetTheme: () => void
 
   // update
   update: <K extends keyof Resume>(key: K, value: Partial<Resume[K]>) => void
@@ -178,6 +180,18 @@ const validateStep = useCallback(
 
   const goTo = useCallback((s: Step) => setStep(s), [])
 
+  const resetTheme = useCallback(() => {
+    console.log("Resetting theme to default while keeping template", resume.theme.template)
+    const updated = {
+      ...resume,
+      theme: {...initialResume.theme, template: resume.theme.template}, // reset all except template
+    }
+    setResume(updated)
+    if (persist) {
+      localStorage.setItem("resume_draft", JSON.stringify(updated))
+    }
+  }, [])
+
   // 🔥 SUBMIT
   const submit = useCallback(
     async (mode: "draft" | "publish") => {
@@ -205,6 +219,7 @@ const validateStep = useCallback(
       validateStep,
       validateAll,
       submit,
+      resetTheme,
     }),
     [resume, step, errors, next, prev, goTo, update, validateStep, validateAll, submit]
   )

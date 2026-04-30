@@ -21,26 +21,26 @@ export function TextTab() {
                 }
             />
 
-            <FontFamilySelect
+            {/* <FontFamilySelect
                 value={theme.font_secondary || FONT_OPTIONS[0].value}
                 onChange={(val) =>
                 update("theme", { ...theme, font_secondary: val })
                 }
-            />
+            /> */}
         </div>
 
       
 
       <FontSizeControl
         value={theme.font_size}
-        onChange={(val) =>
+        onChange={(val:number) =>
           update("theme", { ...theme, font_size: val })
         }
       />
 
       <LineHeightControl
         value={theme.line_height}
-        onChange={(val) =>
+        onChange={(val:number) =>
           update("theme", { ...theme, line_height: val })
         }
       />

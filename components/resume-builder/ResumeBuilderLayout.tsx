@@ -79,7 +79,7 @@ const ResumeBuilderLayout = () => {
       <section className="grid flex-1 md:grid-cols-2 overflow-hidden">
         
         {/* 🧾 LEFT PANEL */}
-        <aside className="border-r w-full bg-background overflow-y-auto">
+        <aside className="border-r w-full bg-background overflow-y-auto mini-scrollbar">
            
             {type === "edit" ? (
               <ResumeFormLayout />

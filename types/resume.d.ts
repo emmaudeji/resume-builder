@@ -21,7 +21,7 @@ export type Resume = {
 
   // 🎨 Design
   theme: Theme
-  templateId: string,
+  // templateId: string,
 
   // ⚙️ Settings
   // settings: ResumeSettings
@@ -29,8 +29,6 @@ export type Resume = {
   // 🤖 AI
   ai?: AIData
 }
-
-
 
 export type Section = {
   id: string
