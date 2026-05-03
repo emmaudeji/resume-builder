@@ -1,11 +1,15 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
+// in layout.tsx or globals.css
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import { Metadata } from "next"
 import { defaultUrl } from "@/utils/config";
 import { Navbar } from "./page";
+import { CookieConsent } from "@/components/common/CookieConsent";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})
 
@@ -102,7 +106,9 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          {children}</ThemeProvider>
+          {children}
+          <CookieConsent/>
+        </ThemeProvider>
       </body>
     </html>
   )

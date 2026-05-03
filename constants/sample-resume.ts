@@ -47,7 +47,7 @@ export const SAMPLE_RESUME: Resume = {
     linkedin: "linkedin.com/in/emma",
     github: "github.com/emma",
 
-    avatar: "https://i.pravatar.cc/150?u=emma",
+    avatar: "",
   },
 
   summary: {

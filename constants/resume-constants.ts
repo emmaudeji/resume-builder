@@ -39,7 +39,7 @@ export const initialResume: Resume = {
 
     show_additional_details: false,
 
-    avatar: "https://i.pravatar.cc/150",
+    avatar: "",
   },
 
   // 📝 SUMMARY
@@ -156,3 +156,4 @@ export const FONT_OPTIONS = [
   { label: "Playfair Display", value: "Playfair Display" },
 ]
 
+export const resumeTemplateAvatar = "https://i.pravatar.cc/150"

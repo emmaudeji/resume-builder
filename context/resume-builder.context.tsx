@@ -5,6 +5,7 @@ import { Resume, SectionType } from "@/types/resume"
 import { initialResume } from "@/constants/resume-constants"
 import { validatePersonal } from "@/validators"
 import { set } from "date-fns"
+import { useUserStore } from "@/store/useUserStore"
 
 type Step = SectionType | "review"
  
@@ -30,6 +31,8 @@ type ResumeBuilderContextType = {
 
   // submit
   submit: (mode: "draft" | "publish") => Promise<void>
+  signin: boolean
+  setSignIn: (s: boolean) => void
 }
 
 const ResumeBuilderContext = createContext<ResumeBuilderContextType | null>(null)
@@ -44,18 +47,20 @@ const ResumeBuilderContext = createContext<ResumeBuilderContextType | null>(null
     "certifications",
     "summary",
     "review",
+
     // "custom"
   ]
 
 export function ResumeBuilderProvider({
   children,
   initialData = initialResume,
-  persist = true,
+ 
 }: {
   children: React.ReactNode
   initialData?: Partial<Resume>
   persist?: boolean
 }) {
+  const {user, persistResumeEnabled:persist} = useUserStore()
   
   // 🔥 INIT FROM LOCALSTORAGE (no useEffect)
   const [resume, setResume] = useState<Resume>(() => {
@@ -70,6 +75,7 @@ export function ResumeBuilderProvider({
   })
 
   const [step, setStep] = useState<Step>("personal")
+  const [signin, setSignIn] = useState<boolean>(false)
   const [errors, setErrors] = useState<StepErrors>({})
 
   // 🔥 UPDATE FUNCTION (memoized)
@@ -112,30 +118,6 @@ export function ResumeBuilderProvider({
     },
     [persist]
   )
-
-  // update resume field only, not section
-//   const updateField = useCallback(
-//   <K extends keyof Resume>(
-//     key: K,
-//     value: Resume[K]
-//   ) => {
-//     setResume((prev) => {
-//       const updated = {
-//         ...prev,
-//         [key]: value, // ✅ direct assignment (fix)
-//         updatedAt: new Date().toISOString(),
-//       }
-
-//       if (persist) {
-//         localStorage.setItem("resume_draft", JSON.stringify(updated))
-//       }
-
-//       return updated
-//     })
-//   },
-//   [persist]
-// )
-
 
   // 🔥 VALIDATION ENGINE
 const validateStep = useCallback(
@@ -199,6 +181,9 @@ const validateStep = useCallback(
 
       // call API
       console.log("Submitting", mode, resume)
+      if(!user) {
+        setSignIn(true)
+      }
 
       if (mode === "publish") {
         localStorage.removeItem("resume_draft")
@@ -220,8 +205,10 @@ const validateStep = useCallback(
       validateAll,
       submit,
       resetTheme,
+       signin,
+       setSignIn
     }),
-    [resume, step, errors, next, prev, goTo, update, validateStep, validateAll, submit]
+    [resume, step, errors, next, prev, goTo, update, validateStep, validateAll, submit, signin,]
   )
 
   return (

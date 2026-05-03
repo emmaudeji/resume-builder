@@ -9,10 +9,16 @@ import { Grid2X2 } from "lucide-react"
 import { ResumeRenderer } from "./ResumeRenderer"
 import { ResumeFormLayout } from "../resume-forms/ResumeFormLayout"
  import { ThemeStudio } from "../resume-theme-templates/ThemeStudio"
+import Logo from "../common/Logo"
 
-const ResumeBuilderLayout = () => {
+const ResumeBuilderLayout = ({
+  templateId,
+}: {
+  templateId?: string
+}) => {
   const [type, setType] = useState<"edit" | "customize">("edit")
-  const { step, resume } = useResumeBuilder()
+  console.log({templateId})
+
 
   return (
     <section className="flex flex-col h-screen bg-muted/30">
@@ -22,15 +28,12 @@ const ResumeBuilderLayout = () => {
         <div className="flex items-center justify-between px-4 py-3">
 
           {/* LEFT */}
-          <div className="flex items-center gap-3">
-            <h2 className="font-semibold text-sm text-muted-foreground">
+          <div className="relative flex items-center gap-3">
+            <Logo />
+            <h2 className="absolute -bottom-1 right-4 font-bold text-muted-foreground">
               Resume Builder
             </h2>
-
-            {/* STEP INDICATOR */}
-            <span className="text-xs bg-muted px-2 py-1 rounded-md">
-              {step}
-            </span>
+            
           </div>
 
           {/* CENTER (SEGMENT CONTROL) */}
@@ -66,7 +69,7 @@ const ResumeBuilderLayout = () => {
               className="p-0"
             >
               <div className="bg-muted p-4">
-                 <ResumeRenderer />
+                 <ResumeRenderer templateId={templateId} />
               </div>
             </AppSheet>
           </div>
@@ -89,7 +92,7 @@ const ResumeBuilderLayout = () => {
 
         {/* 🖥️ RIGHT PANEL (PREVIEW CANVAS) */}
         <main className="hidden md:flex items-start justify-center overflow-auto bg-muted/40 p-4 mini-scrollbar">
-            <ResumeRenderer  />
+            <ResumeRenderer templateId={templateId} />
         </main>
       </section>
     </section>

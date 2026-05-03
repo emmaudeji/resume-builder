@@ -1,43 +1,76 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { useUserStore } from "@/store/useUserStore"
-import { useEffect } from "react"
 
-export function hydrateCookiesToStore() {
-  const cookies = document.cookie.split("; ").reduce((acc, curr) => {
-    const [key, value] = curr.split("=")
-    acc[key] = value
-    return acc
-  }, {} as Record<string, string>)
+const COOKIE_KEY = "cookie_consent_state"
+const COOKIE_TIME_KEY = "cookie_consent_time"
 
-  if (cookies.cookie_preferences) {
-    try {
-      const parsed = JSON.parse(
-        decodeURIComponent(cookies.cookie_preferences)
-      )
+type ConsentState = "accepted" | "rejected" | "partial"
 
-      useUserStore.setState({
-        cookiePreferences: parsed,
-        hasSetCookiePreferences: true,
-      })
-    } catch (err) {
-      console.error("Invalid cookie preferences", err)
+export function useCookieConsent() {
+  const {
+    acceptAllCookies,
+    rejectOptionalCookies,
+    setCookiePreferences,
+  } = useUserStore()
+
+  const [open, setOpen] = useState(false)
+
+  const REMINDER_DELAY = 1000 * 60 * 60 * 24 * 7 // 7 days
+
+  useEffect(() => {
+    const state = localStorage.getItem(COOKIE_KEY)
+    const lastTime = localStorage.getItem(COOKIE_TIME_KEY)
+
+    if (!state) {
+      setOpen(true)
+      return
     }
+
+    // reminder logic for non-accept-all users
+    if (state !== "accepted" && lastTime) {
+      const elapsed = Date.now() - Number(lastTime)
+
+      if (elapsed > REMINDER_DELAY) {
+        setOpen(true)
+      }
+    }
+  }, [])
+
+  const saveState = (state: ConsentState) => {
+    localStorage.setItem(COOKIE_KEY, state)
+    localStorage.setItem(COOKIE_TIME_KEY, Date.now().toString())
+  }
+
+  const handleAcceptAll = () => {
+    acceptAllCookies()
+    saveState("accepted")
+    setOpen(false)
+  }
+
+  const handleReject = () => {
+    rejectOptionalCookies()
+    saveState("rejected")
+    setOpen(false)
+  }
+
+  const handlePartial = () => {
+    setCookiePreferences({
+      analytics: true,
+      marketing: false,
+      preferences: true,
+    })
+
+    saveState("partial")
+    setOpen(false)
+  }
+
+  return {
+    open,
+    setOpen,
+    handleAcceptAll,
+    handleReject,
+    handlePartial,
   }
 }
-
-export const initializeCookiesHook = () => {
-    useEffect(() => {
-        hydrateCookiesToStore()
-    }, [])
-}
-
-// const acceptAll = useUserStore((s) => s.acceptAllCookies)
-
-// <button onClick={acceptAll}>Accept All</button>
-
-// const analyticsEnabled = useUserStore(
-//   (s) => s.cookiePreferences.analytics
-// )
-
-// if (analyticsEnabled) {
-//   // load Google Analytics
-// }

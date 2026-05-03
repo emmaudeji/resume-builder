@@ -1,5 +1,6 @@
 import { Resume } from "@/types/resume"
 import { Section } from "./Section"
+import { resumeTemplateAvatar } from "@/constants/resume-constants"
 
 export function CreativeSplitTemplate({
   resume,
@@ -39,7 +40,7 @@ export function CreativeSplitTemplate({
           style={{ gap: "var(--resume-space-block)" }}
         >
             <img
-              src={personal.avatar || "https://i.pravatar.cc/150"}
+              src={personal.avatar || resumeTemplateAvatar}
               alt={`${personal.first_name} ${personal.last_name}`}
               className="w-28 h-28 object-cover"
               style={{
