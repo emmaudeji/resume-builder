@@ -1,6 +1,6 @@
 import { SliderControl } from "./ThemeSliderControl";
 
-export function LineHeightControl(props) {
+export function LineHeightControl(props:any) {
   return (
     <SliderControl
       label="Line Height"

@@ -1,6 +1,6 @@
 import { SliderControl } from "./ThemeSliderControl";
 
-export function FontSizeControl(props) {
+export function FontSizeControl(props:any) {
   return (
     <SliderControl
       label="Font Size"

@@ -4,7 +4,7 @@ import { PersonalSectionProp } from "@/types/resume";
 export function PersonalSection({ data }: {data:PersonalSectionProp}) {
   return (
     <div>
-      <h1 className="text-2xl font-bold">{data.full_name}</h1>
+      <h1 className="text-2xl font-bold">{data.first_name} {data.last_name}</h1>
       <p className="text-sm text-gray-500">{data.job_title}</p>
 
       <div className="mt-2 text-sm">

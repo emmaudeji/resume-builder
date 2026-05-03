@@ -6,6 +6,7 @@ import { ClassicTemplate } from "../resume-templates/ClassicTemplate"
 import { DefaultTemplate } from "../resume-templates/DefaultTemplate"
 import { ModernTemplate } from "../resume-templates/ModernTemplate"
 import { ReactNode } from "react"
+import { ModernSidebarTemplate } from "../resume-templates/ModernSidebarTemplate"
 
 // ---------------------------------------------
 // TYPES
@@ -121,7 +122,7 @@ export const TEMPLATES: TemplateProp[] = [
     id: "modern-sidebar",
     name: "Modern Sidebar",
     preview: "/t1.png",
-    component: DefaultTemplate,
+    component: ModernSidebarTemplate,
     meta: {
       style: "modern",
       layout: "sidebar",

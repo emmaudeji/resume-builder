@@ -33,14 +33,14 @@ export function TextTab() {
 
       <FontSizeControl
         value={theme.font_size}
-        onChange={(val) =>
+        onChange={(val:number) =>
           update("theme", { ...theme, font_size: val })
         }
       />
 
       <LineHeightControl
         value={theme.line_height}
-        onChange={(val) =>
+        onChange={(val:number) =>
           update("theme", { ...theme, line_height: val })
         }
       />

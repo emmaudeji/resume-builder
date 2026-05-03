@@ -155,3 +155,4 @@ export const FONT_OPTIONS = [
   { label: "Lora", value: "Lora" },
   { label: "Playfair Display", value: "Playfair Display" },
 ]
+
