@@ -21,12 +21,12 @@ export function TextTab() {
                 }
             />
 
-            <FontFamilySelect
+            {/* <FontFamilySelect
                 value={theme.font_secondary || FONT_OPTIONS[0].value}
                 onChange={(val) =>
                 update("theme", { ...theme, font_secondary: val })
                 }
-            />
+            /> */}
         </div>
 
       

@@ -6,7 +6,11 @@ import { ClassicTemplate } from "../resume-templates/ClassicTemplate"
 import { DefaultTemplate } from "../resume-templates/DefaultTemplate"
 import { ModernTemplate } from "../resume-templates/ModernTemplate"
 import { ReactNode } from "react"
+import { ModernSingleColumnTemplate } from "../resume-templates/ModernSingleColumn"
 import { ModernSidebarTemplate } from "../resume-templates/ModernSidebarTemplate"
+import { MinimalGridTemplate } from "../resume-templates/MinimalGridTemplate"
+import { ExecutiveElegantTemplate } from "../resume-templates/ExecutiveElegantTemplate"
+import { CreativeSplitTemplate } from "../resume-templates/CreativeSplitTemplate"
 
 // ---------------------------------------------
 // TYPES
@@ -135,7 +139,7 @@ export const TEMPLATES: TemplateProp[] = [
     id: "modern-single",
     name: "Modern Single",
     preview: "/t2.png",
-    component: ModernTemplate,
+    component: ModernSingleColumnTemplate,
     meta: {
       style: "modern",
       layout: "single-column",
@@ -161,7 +165,7 @@ export const TEMPLATES: TemplateProp[] = [
     id: "minimal-grid",
     name: "Minimal Grid",
     preview: "/t4.png",
-    component: DefaultTemplate,
+    component: MinimalGridTemplate,
     meta: {
       style: "minimal",
       layout: "two-column",
@@ -174,7 +178,7 @@ export const TEMPLATES: TemplateProp[] = [
     id: "executive-elegant",
     name: "Executive Elegant",
     preview: "/t5.png",
-    component: DefaultTemplate,
+    component: ExecutiveElegantTemplate,
     meta: {
       style: "executive",
       layout: "single-column",
@@ -187,7 +191,7 @@ export const TEMPLATES: TemplateProp[] = [
     id: "creative-split",
     name: "Creative Split",
     preview: "/t6.png",
-    component: DefaultTemplate,
+    component: CreativeSplitTemplate,
     meta: {
       style: "creative",
       layout: "two-column",
@@ -201,7 +205,7 @@ export const TEMPLATES: TemplateProp[] = [
 
 
 
-
+// https://i.pravatar.cc/{size}
 
 // // TemplateRegistry.ts
 

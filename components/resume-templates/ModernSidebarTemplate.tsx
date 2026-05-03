@@ -1,171 +1,160 @@
-import { TemplateComponent } from "../resume-builder/TemplateRegistry"
-import { resumeStyles } from "@/lib/theme-engine"
+import { Resume } from "@/types/resume"
+import { SidebarSection } from "./SidebarSection"
+import { Section } from "./Section"
 
-export const ModernSidebarTemplate: TemplateComponent = ({ resume }) => {
-  const { personal, summary, experience, education, skills } = resume
+export function ModernSidebarTemplate({ resume }: { resume: Resume }) {
+  const {
+    personal,
+    experience,
+    education,
+    skills,
+    summary,
+  } = resume
 
   return (
     <div
-      className="w-full h-full grid grid-cols-3"
+      className="w-full h-full flex text-[var(--resume-font-size)] leading-[var(--resume-line-height)]"
       style={{
         fontFamily: "var(--resume-font-family)",
-        fontSize: "var(--resume-font-size)",
-        lineHeight: "var(--resume-line-height)",
       }}
     >
-      {/* 🟣 SIDEBAR */}
+      {/* ---------------- SIDEBAR ---------------- */}
       <aside
-        className="col-span-1 p-5 flex flex-col"
+        className="w-[30%] p-6 flex flex-col"
         style={{
-          background: "var(--resume-primary)",
-          color: "white",
+          background:
+            "color-mix(in srgb, var(--resume-primary) 10%, white)",
           gap: "var(--resume-space-section)",
         }}
       >
         {/* PROFILE */}
-        <div className="space-y-2">
+        <div
+          className="flex flex-col"
+          style={{ gap: "var(--resume-space-block)" }}
+        >
           {personal.avatar && (
             <img
               src={personal.avatar}
-              alt="avatar"
-              className="w-20 h-20 rounded-full object-cover border"
+              alt={`${personal.first_name} ${personal.last_name}`}
+              className="w-20 h-20 object-cover"
+              style={{
+                borderRadius: "var(--resume-radius)",
+              }}
             />
           )}
 
-          <h1 className="text-lg font-bold">
-            {personal.first_name} {personal.last_name}
-          </h1>
+          <div>
+            <h1 className="text-lg font-bold">
+              {personal.first_name} {personal.last_name}
+            </h1>
 
-          <p className="text-sm opacity-80">
-            {personal.job_title}
-          </p>
+            {personal.job_title && (
+              <p className="opacity-70">{personal.job_title}</p>
+            )}
+          </div>
         </div>
 
         {/* CONTACT */}
-        <div className={resumeStyles.section} style={{ gap: "6px" }}>
-          <h2 className="text-xs uppercase font-semibold opacity-70">
-            Contact
-          </h2>
+        <SidebarSection title="Contact">
+          {personal.email && <p>{personal.email}</p>}
+          {personal.phone && <p>{personal.phone}</p>}
 
-          <p>{personal.email}</p>
-          <p>{personal.phone}</p>
-          <p>{personal.city}</p>
-          <p>{personal.linkedin}</p>
-        </div>
+          {(personal.address || personal.city) && (
+            <p>
+              {personal.address}
+              {personal.city ? `, ${personal.city}` : ""}
+            </p>
+          )}
+        </SidebarSection>
 
         {/* SKILLS */}
-        {skills.items.length > 0 && (
-          <div className={resumeStyles.section} style={{ gap: "6px" }}>
-            <h2 className="text-xs uppercase font-semibold opacity-70">
-              Skills
-            </h2>
-
+        {skills?.visible && skills.items?.length > 0 && (
+          <SidebarSection title={skills.label || "Skills"}>
             {skills.items.map((skill, i) => (
-              <div key={i} className="flex justify-between text-sm">
-                <span>{skill.name}</span>
-
-                {skills.show_level && skill.level && (
-                  <div className="flex gap-1">
-                    {Array.from({ length: 5 }).map((_, idx) => (
-                      <span
-                        key={idx}
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                          background:
-                            skill?.level && (idx < skill?.level)
-                              ? "white"
-                              : "rgba(255,255,255,0.3)",
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
+              <p key={i}>{skill.name}</p>
             ))}
-          </div>
+          </SidebarSection>
         )}
       </aside>
 
-      {/* ⚪ MAIN CONTENT */}
+      {/* ---------------- MAIN ---------------- */}
       <main
-        className="col-span-2 p-6 flex flex-col"
+        className="w-[70%] p-8 flex flex-col"
         style={{
           gap: "var(--resume-space-section)",
         }}
       >
         {/* SUMMARY */}
-        {summary.summary && (
-          <section className={resumeStyles.section}>
-            <h2 className={resumeStyles.heading}>Summary</h2>
-            <p className={resumeStyles.text}>{summary.summary}</p>
-          </section>
+        {summary?.visible && summary.summary && (
+          <Section title={summary.label || "Summary"}>
+            <p>{summary.summary}</p>
+          </Section>
         )}
 
         {/* EXPERIENCE */}
-        {experience.items.length > 0 && (
-          <section className={resumeStyles.section}>
-            <h2 className={resumeStyles.heading}>Experience</h2>
+        {experience?.visible && experience.items?.length > 0 && (
+          <Section title={experience.label || "Experience"}>
+            {experience.items.map((exp) => (
+              <div
+                key={exp.id}
+                className="flex flex-col"
+                style={{ gap: "var(--resume-space-block)" }}
+              >
+                <div className="flex justify-between font-medium">
+                  <span>{exp.role}</span>
 
-            <div style={{ gap: "var(--resume-space-block)" }} className="flex flex-col">
-              {experience.items.map((exp) => (
-                <div key={exp.id} className={resumeStyles.block}>
-                  <div className="flex justify-between">
-                    <h3 className="font-semibold">{exp.role}</h3>
-                    <span className="text-xs text-muted-foreground">
-                      {exp.start_date} -{" "}
-                      {exp.current ? "Present" : exp.end_date}
-                    </span>
-                  </div>
-
-                  <p className="text-sm text-muted-foreground">
-                    {exp.company_name} • {exp.location}
-                  </p>
-
-                  {exp.description && (
-                    <p className="text-sm mt-1">{exp.description}</p>
-                  )}
-
-                  {exp?.highlights && (exp?.highlights?.length > 0) && (
-                    <ul className="list-disc ml-4 text-sm mt-1">
-                      {exp?.highlights?.map((h, i) => (
-                        <li key={i}>{h}</li>
-                      ))}
-                    </ul>
-                  )}
+                  <span className="text-xs opacity-70">
+                    {exp.start_date} -{" "}
+                    {exp.current ? "Present" : exp.end_date}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </section>
+
+                <p>{exp.company_name}</p>
+
+                {exp.description && (
+                  <p className="opacity-80">{exp.description}</p>
+                )}
+
+                {exp.highlights && exp.highlights?.length > 0 && (
+                  <ul className="list-disc pl-4 opacity-80">
+                    {exp.highlights.map((h, i) => (
+                      <li key={i}>{h}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </Section>
         )}
 
         {/* EDUCATION */}
-        {education.items.length > 0 && (
-          <section className={resumeStyles.section}>
-            <h2 className={resumeStyles.heading}>Education</h2>
-
+        {education?.visible && education.items?.length > 0 && (
+          <Section title={education.label || "Education"}>
             {education.items.map((edu) => (
-              <div key={edu.id} className={resumeStyles.block}>
-                <div className="flex justify-between">
-                  <h3 className="font-semibold">
-                    {edu.degree} {edu.field_of_study}
-                  </h3>
+              <div
+                key={edu.id}
+                className="flex flex-col"
+                style={{ gap: "var(--resume-space-block)" }}
+              >
+                <div className="flex justify-between font-medium">
+                  <span>{edu.degree}</span>
 
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs opacity-70">
                     {edu.start_date} -{" "}
                     {edu.current ? "Present" : edu.end_date}
                   </span>
                 </div>
 
-                <p className="text-sm text-muted-foreground">
-                  {edu.institution}
-                </p>
+                <p>{edu.institution}</p>
 
-                {edu.description && (
-                  <p className="text-sm mt-1">{edu.description}</p>
+                {edu.field_of_study && (
+                  <p className="text-sm opacity-70">
+                    {edu.field_of_study}
+                  </p>
                 )}
               </div>
             ))}
-          </section>
+          </Section>
         )}
       </main>
     </div>

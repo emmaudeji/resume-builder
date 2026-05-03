@@ -2,39 +2,19 @@
 
 import { useResumeBuilder } from "@/context/resume-builder.context"
 import { getTemplateById } from "./TemplateRegistry"
-import { useMemo, useState, useEffect } from "react"
+import { useMemo, useState } from "react"
 import { applyThemeVariables } from "@/lib/theme-engine"
-import { getSampleResume } from "@/lib/sample-resume"
-import { PreviewToggle } from "./PreviewToggle"
-import { A4Page } from "../resume-templates/A4Page"
+import { ResumePreviewControls } from "./ResumePreviewControls"
+import { SAMPLE_RESUME } from "@/constants/sample-resume"
+import { TemplateTab } from "../resume-theme-templates/TemplateTab"
+import { ResumePreviewScale } from "./ResumePreviewScale"
 
 export function ResumeRenderer() {
   const { resume } = useResumeBuilder()
-  const [preview, setPreview] = useState(false)
-  const [scale, setScale] = useState(1)
 
-  useEffect(() => {
-    const updateScale = () => {
-      if (window.innerWidth < 640) setScale(0.6)
-      else if (window.innerWidth < 1024) setScale(0.8)
-      else setScale(1)
-    }
+  const [useSample, setUseSample] = useState(false)
 
-    updateScale()
-    window.addEventListener("resize", updateScale)
-    return () => window.removeEventListener("resize", updateScale)
-  }, [])
-
-  const activeResume = useMemo(() => {
-    if (!preview) return resume
-
-    const sample = getSampleResume()
-    return {
-      ...sample,
-      theme: resume.theme,
-      templateId: resume.templateId,
-    }
-  }, [preview, resume])
+  const activeResume = useSample ? {...SAMPLE_RESUME, theme:  resume.theme } : resume
 
   const template = getTemplateById(activeResume.theme.template)
 
@@ -43,24 +23,35 @@ export function ResumeRenderer() {
     [template.id]
   )
 
-  return (
-    <div className="relative w-full h-full">
-      <PreviewToggle preview={preview} setPreview={setPreview} />
+  const [viewing, setViewing] = useState<"resume" | "sample" | "template">('resume')
 
-      <div className="w-full overflow-auto flex justify-center">
-        <div
-          className="origin-top"
-          style={{
-            transform: `scale(${scale})`,
-          }}
-        >
-          <div style={applyThemeVariables(activeResume.theme)}>
-            <A4Page>
+  return (
+    <div className="relative w-full h-full flex flex-col items-center space-y-1">
+      
+ 
+      <ResumePreviewControls
+        viewing={viewing}
+        onToggle={setViewing} 
+        setUseSample={setUseSample}
+      />
+
+      {
+        viewing === "template" ? 
+          <TemplateTab /> 
+          :
+          <ResumePreviewScale>
+            <div
+              className="bg-white overflow-hidden  text-[var(--resume-font-size)] leading-[var(--resume-line-height)] font-[var(--resume-font-family)]"
+              style={{
+                ...applyThemeVariables(activeResume.theme),
+                width: "794px",
+                height: "1123px",
+              }}
+            >
               <TemplateComponent resume={activeResume} />
-            </A4Page>
-          </div>
-        </div>
-      </div>
+            </div>
+          </ResumePreviewScale>
+      }
     </div>
   )
 }

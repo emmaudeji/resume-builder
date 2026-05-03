@@ -39,7 +39,7 @@ export const initialResume: Resume = {
 
     show_additional_details: false,
 
-    avatar: "",
+    avatar: "https://i.pravatar.cc/150",
   },
 
   // 📝 SUMMARY
@@ -133,11 +133,11 @@ export const initialResume: Resume = {
     style: "modern",
 
     shadow: "soft",
-    template: "modern-flow",
+    template: "modern-single",
   },
 
   // 🔗 TEMPLATE
-  templateId: "modern-flow",
+  // templateId: "modern-flow",
 
   // 🤖 AI (safe minimal init)
   ai: {

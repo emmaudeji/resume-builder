@@ -4,13 +4,11 @@ import { useResumeBuilder } from "@/context/resume-builder.context"
 import { useState } from "react"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
-import { ResumeFormStepRenderer } from "../resume-forms/ResumeFormStepRenderer"
-import { AppSheet } from "../shared/AppSheet"
+ import { AppSheet } from "../shared/AppSheet"
 import { Grid2X2 } from "lucide-react"
 import { ResumeRenderer } from "./ResumeRenderer"
 import { ResumeFormLayout } from "../resume-forms/ResumeFormLayout"
-import { ThemeProvider } from "@/context/theme-provider"
-import { ThemeStudio } from "../resume-theme-templates/ThemeStudio"
+ import { ThemeStudio } from "../resume-theme-templates/ThemeStudio"
 
 const ResumeBuilderLayout = () => {
   const [type, setType] = useState<"edit" | "customize">("edit")
@@ -79,7 +77,7 @@ const ResumeBuilderLayout = () => {
       <section className="grid flex-1 md:grid-cols-2 overflow-hidden">
         
         {/* 🧾 LEFT PANEL */}
-        <aside className="border-r w-full bg-background overflow-y-auto">
+        <aside className="border-r w-full bg-background overflow-y-auto mini-scrollbar">
            
             {type === "edit" ? (
               <ResumeFormLayout />
@@ -90,11 +88,8 @@ const ResumeBuilderLayout = () => {
         </aside>
 
         {/* 🖥️ RIGHT PANEL (PREVIEW CANVAS) */}
-        <main className="hidden md:flex items-start justify-center overflow-auto bg-muted/40 p-6">
-          <ThemeProvider theme={resume.theme}>
+        <main className="hidden md:flex items-start justify-center overflow-auto bg-muted/40 p-4 mini-scrollbar">
             <ResumeRenderer  />
-          </ThemeProvider>
-           {/* <ResumeRenderer /> */}
         </main>
       </section>
     </section>

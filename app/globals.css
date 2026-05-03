@@ -347,19 +347,13 @@
     .dark .mini-scrollbar::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.12);
     }
-    
-    @media print {
-      body {
-        background: white;
-      }
 
-      .a4-page {
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        box-shadow: none;
-        page-break-after: always;
+    /* when printing, remove wrapper */
+    @media print {
+      .resume-preview-wrapper {
+        transform: none !important;
       }
     }
+
     
 }
