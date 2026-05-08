@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, FileText, BarChart, Wand2, Menu } from "lucide-react";
 // import { useState } from "react";
 import Link from "next/link";
+import ResumeSection from "@/components/resume-ads/ResumeSection";
 
 export default function LandingPage() {
   // const [open, setOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function LandingPage() {
       <Navbar   />
       <Hero />
       <Logos />
+      <ResumeSection/>
       <Features />
       <Demo />
       <Templates />

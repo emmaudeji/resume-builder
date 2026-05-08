@@ -4,7 +4,6 @@
 import { Resume } from "@/types/resume"
 import { ClassicTemplate } from "../resume-templates/ClassicTemplate"
 import { DefaultTemplate } from "../resume-templates/DefaultTemplate"
-import { ModernTemplate } from "../resume-templates/ModernTemplate"
 import { ReactNode } from "react"
 import { ModernSingleColumnTemplate } from "../resume-templates/ModernSingleColumn"
 import { ModernSidebarTemplate } from "../resume-templates/ModernSidebarTemplate"

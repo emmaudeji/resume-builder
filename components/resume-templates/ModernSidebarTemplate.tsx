@@ -1,6 +1,7 @@
 import { Resume } from "@/types/resume"
 import { SidebarSection } from "./SidebarSection"
 import { Section } from "./Section"
+import { resumeTemplateAvatar } from "@/constants/resume-constants"
 
 export function ModernSidebarTemplate({ resume }: { resume: Resume }) {
   const {
@@ -34,7 +35,7 @@ export function ModernSidebarTemplate({ resume }: { resume: Resume }) {
         >
           {personal.avatar && (
             <img
-              src={personal.avatar}
+              src={personal.avatar || resumeTemplateAvatar}
               alt={`${personal.first_name} ${personal.last_name}`}
               className="w-20 h-20 object-cover"
               style={{
