@@ -30,6 +30,7 @@ type ResumeBuilderContextType = {
 
   // submit
   submit: (mode: "draft" | "publish") => Promise<void>
+  setResume: React.Dispatch<React.SetStateAction<Resume>>
 }
 
 const ResumeBuilderContext = createContext<ResumeBuilderContextType | null>(null)
@@ -220,6 +221,7 @@ const validateStep = useCallback(
       validateAll,
       submit,
       resetTheme,
+      setResume,
     }),
     [resume, step, errors, next, prev, goTo, update, validateStep, validateAll, submit]
   )
